@@ -1,0 +1,29 @@
+name: BlissGems
+version: '1.0-SNAPSHOT'
+main: com.itsundefined.blissgems.BlissGems
+api-version: '1.20'
+commands:
+  bliss:
+    description: "&7killme"
+    usage: "/bliss gem (player) (tier) (1/2)"
+    aliases: [ bliss ]
+    permission: bliss.command.bliss
+    permission-message: "&7killme"
+  menu:
+    description: "Bliss Smp Menu Allows you to get any Bliss Smp Item example: Strength Gem"
+    usage: "/menu"
+    aliases: [ menu ]
+    permission: bliss.command.menu
+    permission-message: "Reqiures Op"
+  particlecircle:
+    description:  "spawns particel circle V2?"
+    usage: "/particlecircle"
+    aliases: [ particlecircle ]
+    permission: bliss.command.pc
+    permission-message: "op"
+  cooldown:
+    description: "Bliss Smp Menu Allows you to get any Bliss Smp Item example: Strength Gem"
+    usage: "/cooldown <player>"
+    aliases: [ cooldown ]
+    permission: bliss.command.cooldown
+    permission-message: "Reqiures Op"

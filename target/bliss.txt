@@ -1,0 +1,527 @@
+ItemMeta meta = BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇIᴛᴇᴍ.getItemMeta();
+                    if (meta != null && meta.hasCustomModelData()) {
+                        int CustomModelData = meta.getCustomModelData();
+                        long TerminalVelocityCooldown;
+                        switch (CustomModelData) {
+                            case 8, 28, 48, 68, 88 -> TerminalVelocityCooldown = 30;
+                            default -> {
+                                return;
+                            }
+                        }
+                        SpeedGem_Power_2_Enchanting.put(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.getUniqueId(), TerminalVelocityCooldown);
+                        SpeedGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ);
+ @EventHandler
+    public void BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ(EntityDamageByEntityEvent BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ) {
+        if (BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getDamager() instanceof Player && BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getEntity() instanceof LivingEntity) {
+            Player BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ = (Player) BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getDamager();
+            LivingEntity BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ = (LivingEntity) BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getEntity();
+            PersistentDataContainer data = BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getPersistentDataContainer();
+            boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+            boolean sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
+            boolean sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴘᴇᴇᴅCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+            boolean sᴘᴇᴇᴅ_ʟɪɴᴇ = data.getOrDefault(SpeedLine, PersistentDataType.INTEGER, 0) == 1;
+            boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
+            ItemStack BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ = BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getInventory().getItemInMainHand();
+            if (SpeedGem(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ)) {
+                ItemMeta meta = BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ.getItemMeta();
+                if (!sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ && !sᴘᴇᴇᴅ_ʟɪɴᴇ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
+                    data.set(SpeedLine, PersistentDataType.INTEGER, 1);
+                    int customModelData = meta.getCustomModelData();
+                    long SpeedLineCooldown;
+                    switch (customModelData) {
+                        case 8, 28 -> SpeedLineCooldown = 240L;
+                        case 48 -> SpeedLineCooldown = 360L;
+                        case 68, 88 -> SpeedLineCooldown = 480L;
+                        default ->
+                        {return;}
+                    }
+                    SpeedGem_Power_1_SpeedCircle.put(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getUniqueId(), SpeedLineCooldown);
+                    SpeedGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ);
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.getName());
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getName());
+                    for (PotionEffect effect : BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.getActivePotionEffects()) {
+                        BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.removePotionEffect(effect.getType());
+                    }
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30 * 30, 3));
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 20, 4));
+                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ, 254, 253, 23).runTaskTimer(this, 0, 2);
+                }
+            }
+            if (StrengthGem(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ)) {
+
+            }
+        }
+    }
+
+
+if (Hᴇʟᴍᴇᴛ == null || Hᴇʟᴍᴇᴛ.getType() == Material.AIR) {
+                        
+                    }
+                    if (Cʜᴇsᴛᴘʟᴀᴛᴇ == null || Cʜᴇsᴛᴘʟᴀᴛᴇ.getType() == Material.AIR) {
+                        
+                    }
+                    if (Lᴇɢɢɪɴɢs == null || Lᴇɢɢɪɴɢs.getType() == Material.AIR) {
+                     
+                    }
+                    if (Bᴏᴏᴛs == null || Bᴏᴏᴛs.getType() == Material.AIR) {
+                        
+                    }
+
+setBaseValue(8.0);
+                    count = 0;
+                    new BukkitRunnable() {
+                        @Override
+                        public void run() {
+                            if (particleTasks.containsKey(playerId)) {
+                                particleTasks.get(playerId).cancel();
+                                particleTasks.remove(playerId);
+                            }
+                        }
+                    }.runTaskLater(this, 40 * 20); // 40 seconds * 20 ticks per second
+                }
+                ChadStrengthCritical.put(playerId, count);
+            }
+        }
+    }
+
+    private void drawParticles(Player player, int currentCase) {
+        // Start a BukkitRunnable to spawn particles every tick
+        new BukkitRunnable() {
+            int ticksPassed = 0;
+            final int durationTicks = 40 * 20; // 40 seconds in ticks
+
+            @Override
+            public void run() {
+                if (ticksPassed >= durationTicks) {
+                    cancel(); // Stop running after 40 seconds
+                    return;
+                }
+
+                Location eyeLocation = player.getEyeLocation(); // Get player's eye location
+
+                // Example offsets relative to eye location
+                Location loc1 = eyeLocation.clone().add(-1, 0, 1);
+                Location loc2 = eyeLocation.clone().add(0, 0, 1.4);
+                Location loc3 = eyeLocation.clone().add(1, 0, 1);
+
+                // Adjust particle spawn positions based on eye location and offsets
+                switch (currentCase) {
+                    case 1:
+                        player.spawnParticle(Particle.SMOKE_NORMAL, loc1, 1, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.SMOKE_NORMAL, loc2, 1, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.SMOKE_NORMAL, loc3, 1, 0, 0, 0, 0);
+                        break;
+                    case 2:
+                        player.spawnParticle(Particle.REDSTONE, loc1, 1, new Particle.DustOptions(org.bukkit.Color.fromRGB(199, 0, 10), 1));
+                        player.spawnParticle(Particle.SMOKE_NORMAL, loc2, 1, 0, 0, 0, 0);
+                        player.spawnParticle(Particle.SMOKE_NORMAL, loc3, 1, 0, 0, 0, 0);
+                        break;
+                    case 3:
+                        player.spawnParticle(Particle.REDSTONE, loc1, 1, new Particle.DustOptions(org.bukkit.Color.fromRGB(199, 0, 10), 1));
+                        player.spawnParticle(Particle.REDSTONE, loc2, 1, new Particle.DustOptions(org.bukkit.Color.fromRGB(199, 0, 10), 1));
+                        player.spawnParticle(Particle.SMOKE_NORMAL, loc3, 1, 0, 0, 0, 0);
+                        break;
+                    case 4:
+                        player.spawnParticle(Particle.REDSTONE, loc1, 1, new Particle.DustOptions(org.bukkit.Color.fromRGB(199, 0, 10), 1));
+                        player.spawnParticle(Particle.REDSTONE, loc2, 1, new Particle.DustOptions(org.bukkit.Color.fromRGB(199, 0, 10), 1));
+                        player.spawnParticle(Particle.REDSTONE, loc3, 1, new Particle.DustOptions(org.bukkit.Color.fromRGB(199, 0, 10), 1));
+                        break;
+                }
+
+                ticksPassed++;
+            }
+        }.runTaskTimer(this, 0, 1);
+    }
+
+
+    @EventHandler
+    public void StrengthLineUser(EntityDamageByEntityEvent StrengthLineUser) {
+        if (StrengthLineUser.getDamager() instanceof Player && StrengthLineUser.getEntity() instanceof LivingEntity) {
+            Player StrengthLineAttacker = (Player) StrengthLineUser.getDamager();
+            LivingEntity victim = (LivingEntity) StrengthLineUser.getEntity();
+            ItemStack StrengthGemItem = StrengthLineAttacker.getInventory().getItemInMainHand();
+            if (StrengthGem(StrengthGemItem)) {
+                ItemMeta meta = StrengthGemItem.getItemMeta();
+                PersistentDataContainer data = StrengthLineAttacker.getPersistentDataContainer();
+                boolean STRENGTH_CIRCLE = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+                boolean STRENGTH_LINE = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
+                boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
+                if (!STRENGTH_CIRCLE && !STRENGTH_LINE && !DISABLED_GEM) {
+                    data.set(StrengthLine, PersistentDataType.INTEGER, 1);
+                    int customModelData = meta.getCustomModelData();
+                    long StrengthLineCooldown;
+                    switch (customModelData) {
+                        case 10:
+                        case 30:
+                            StrengthLineCooldown = 240L;
+                            break;
+                        case 50:
+                            StrengthLineCooldown = 360L;
+                            break;
+                        case 70:
+                        case 90:
+                            StrengthLineCooldown = 480L;
+                            break;
+                        default:
+                            return;
+                    }
+                    StrengthGem_Power_1_StrengthCircle.put(StrengthLineAttacker.getUniqueId(), StrengthLineCooldown);
+                    StrengthGemActionbar(StrengthLineAttacker);
+                    StrengthLineAttacker.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3AFrailer" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + victim.getName());
+                    victim.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3AFrailer" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + StrengthLineAttacker.getName());
+                    for (PotionEffect effect : victim.getActivePotionEffects()) {
+                        victim.removePotionEffect(effect.getType());
+                    }
+                    victim.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 380, 1));
+                    new ParticleLineTask(StrengthLineAttacker, victim, 241, 3, 3).runTaskTimer(this, 0, 2);
+                }
+            }
+        }
+    }
+
+    @EventHandler
+    public void StrengthCircle(PlayerInteractEvent StrengthCircle) {
+        Player StrengthCirclePlayer = StrengthCircle.getPlayer();
+        ItemStack StrengthGemItem = StrengthCirclePlayer.getInventory().getItemInMainHand();
+        if (StrengthCircle.getAction() == Action.LEFT_CLICK_AIR || StrengthCircle.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (StrengthGem(StrengthGemItem)) {
+                ItemMeta meta = StrengthGemItem.getItemMeta();
+                if (meta != null && meta.hasCustomModelData()) {
+                    int CustomModelData = meta.getCustomModelData();
+                    int radius = StrengthGemCustomModelData(CustomModelData);
+                    if (radius > 0) {
+                        PersistentDataContainer data = StrengthCirclePlayer.getPersistentDataContainer();
+                        boolean STRENGTH_CIRCLE = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+                        boolean STRENGTH_LINE = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
+                        boolean BLISS_PARTICLES_LESS = data.getOrDefault(BlissParticlesLess, PersistentDataType.INTEGER, 0) == 1;
+                        boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
+                        if (!STRENGTH_CIRCLE && !STRENGTH_LINE && !DISABLED_GEM) {
+                            data.set(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            int customModelData = meta.getCustomModelData();
+                            long StrengthCircleCooldown;
+                            switch (customModelData) {
+                                case 10:
+                                case 30:
+                                    StrengthCircleCooldown = 240L;
+                                    break;
+                                case 50:
+                                    StrengthCircleCooldown = 360L;
+                                    break;
+                                case 70:
+                                case 90:
+                                    StrengthCircleCooldown = 480L;
+                                    break;
+                                default:
+                                    return;
+                            }
+                            StrengthGem_Power_1_StrengthCircle.put(StrengthCirclePlayer.getUniqueId(), StrengthCircleCooldown);
+                            StrengthGemActionbar(StrengthCirclePlayer);
+                            StrengthCircleRadius(StrengthCirclePlayer, radius);
+                            Location loc = StrengthCirclePlayer.getLocation();
+                            PrimaryRGBParticleCircle(loc, 241, 3, 3, radius);
+                            PrimaryRGBParticleCircleLess(loc, 241, 3, 3, radius);
+                            for (Entity entity : StrengthCirclePlayer.getNearbyEntities(radius, radius, radius)) {
+                                if (entity instanceof LivingEntity && !entity.equals(StrengthCirclePlayer)) {
+                                    LivingEntity livingEntity = (LivingEntity) entity;
+                                    for (PotionEffect effect : livingEntity.getActivePotionEffects()) {
+                                        livingEntity.removePotionEffect(effect.getType());
+                                    }
+                                    livingEntity.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected by group " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3A Frailer " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "by " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + StrengthCirclePlayer.getName());
+                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 380, 1)); // Adjust duration and amplifier as needed
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+@EventHandler
+    public void BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇ(PlayerInteractEvent BlissParticleCircle) {
+        Player BlissParticleCirclePlayer = BlissParticleCircle.getPlayer();
+        ItemStack BlissParticleCircleItem = BlissParticleCirclePlayer.getInventory().getItemInMainHand();
+        PersistentDataContainer data = BlissParticleCirclePlayer.getPersistentDataContainer();
+        boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
+        boolean sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ  = data.getOrDefault(SᴘᴇᴇᴅCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean sᴘᴇᴇᴅ_ʟɪɴᴇ = data.getOrDefault(SpeedLine, PersistentDataType.INTEGER, 0) == 1;
+        boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
+        if (BlissParticleCircle.getAction() == Action.LEFT_CLICK_AIR || BlissParticleCircle.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (StrengthGem(BlissParticleCircleItem)) {
+                if (!sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ && !sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
+                ItemMeta meta = BlissParticleCircleItem.getItemMeta();
+                if (meta != null && meta.hasCustomModelData()) {
+                    int CustomModelData = meta.getCustomModelData();
+                    int radius = StrengthGemCustomModelData(CustomModelData);
+                    if (radius > 0) {
+                            data.set(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            int StrengthGemCustomModelData = meta.getCustomModelData();
+                            long StrengthCircleCooldown;
+                            switch (StrengthGemCustomModelData) {
+                                case 10:
+                                case 30:
+                                    StrengthCircleCooldown = 240L;
+                                    break;
+                                case 50:
+                                    StrengthCircleCooldown = 360L;
+                                    break;
+                                case 70:
+                                case 90:
+                                    StrengthCircleCooldown = 480L;
+                                    break;
+                                default:
+                                    return;
+                            }
+                            StrengthGem_Power_1_StrengthCircle.put(BlissParticleCirclePlayer.getUniqueId(), StrengthCircleCooldown);
+                            StrengthGemActionbar(BlissParticleCirclePlayer);
+                            StrengthCircleRadius(BlissParticleCirclePlayer, radius);
+                            Location BlissParticleCircleLocation = BlissParticleCirclePlayer.getLocation();
+                            PrimaryRGBParticleCircle(BlissParticleCircleLocation, 241, 3, 3, radius);
+                            PrimaryRGBParticleCircleLess(BlissParticleCircleLocation, 241, 3, 3, radius);
+                            for (Entity entity : BlissParticleCirclePlayer.getNearbyEntities(radius, radius, radius)) {
+                                if (entity instanceof LivingEntity && !entity.equals(BlissParticleCirclePlayer)) {
+                                    LivingEntity livingEntity = (LivingEntity) entity;
+                                    for (PotionEffect effect : livingEntity.getActivePotionEffects()) {
+                                        livingEntity.removePotionEffect(effect.getType());
+                                    }
+                                    livingEntity.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected by group " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3A Frailer " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "by " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + StrengthCirclePlayer.getName());
+                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 380, 1)); // Adjust duration and amplifier as needed
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            if (SpeedGem(BlissParticleCircleItem)) {
+                if (!sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ && !sᴘᴇᴇᴅ_ʟɪɴᴇ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
+                    ItemMeta meta = BlissParticleCircleItem.getItemMeta();
+                    if (meta != null && meta.hasCustomModelData()) {
+                        int CustomModelData = meta.getCustomModelData();
+                        int radius = SpeedGemCustomModelData(CustomModelData);
+                        if (radius > 0) {
+                            data.set(SᴘᴇᴇᴅCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            int SpeedGemCustomModelData = meta.getCustomModelData();
+                            long SpeedCircleCooldown;
+                            switch (SpeedGemCustomModelData) {
+                                case 8:
+                                    SpeedCircleCooldown = 240L; // 4 minutes
+                                    break;
+                                case 28:
+                                    SpeedCircleCooldown = 240L; // 4 minutes
+                                    break;
+                                case 48:
+                                    SpeedCircleCooldown = 360L; // 6 minutes
+                                    break;
+                                case 68:
+                                    SpeedCircleCooldown = 480L; // 8 minutes
+                                    break;
+                                case 88:
+                                    SpeedCircleCooldown = 480L;
+                                    break;
+                                default:
+                                    return;
+                            }
+                            SpeedGem_Power_1_SpeedCircle.put(BlissParticleCirclePlayer.getUniqueId(), SpeedCircleCooldown);
+                            SpeedGemActionbar(BlissParticleCirclePlayer);
+                            SpeedCircleRadius(BlissParticleCirclePlayer, radius);
+                            Location loc = BlissParticleCirclePlayer.getLocation();
+                            PrimaryRGBParticleCircle(loc, 254, 253, 23, radius);
+                            PrimaryRGBParticleCircleLess(loc, 254, 253, 23, radius);
+                            for (Entity entity : BlissParticleCirclePlayer.getNearbyEntities(radius, radius, radius)) {
+                                LivingEntity livingEntity = (LivingEntity) entity;
+                                if (entity instanceof LivingEntity && !entity.equals(BlissParticleCirclePlayer)) {
+                                    ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 200, 1));
+                                    ((LivingEntity) entity).addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 200, 1));
+                                    livingEntity.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected by group " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "by " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + SpeedCirclePlayer.getName());
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+@EventHandler
+    public void BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇSᴛʀᴇɴɢᴛʜ(PlayerInteractEvent BlissParticleCircle) {
+        Player BlissParticleCirclePlayer = BlissParticleCircle.getPlayer();
+        ItemStack BlissParticleCircleItem = BlissParticleCirclePlayer.getInventory().getItemInMainHand();
+        if (BlissParticleCircle.getAction() == Action.LEFT_CLICK_AIR || BlissParticleCircle.getAction() == Action.LEFT_CLICK_BLOCK) {
+            if (StrengthGem(BlissParticleCircleItem)) {
+                ItemMeta meta = BlissParticleCircleItem.getItemMeta();
+                if (meta != null && meta.hasCustomModelData()) {
+                    int CustomModelData = meta.getCustomModelData();
+                    int radius = StrengthGemCustomModelData(CustomModelData);
+                    if (radius > 0) {
+                        PersistentDataContainer data = BlissParticleCirclePlayer.getPersistentDataContainer();
+                        boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+                        boolean sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
+                        boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
+                        if (!sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ && !sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
+                            data.set(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            int StrengthGemCustomModelData = meta.getCustomModelData();
+                            long StrengthCircleCooldown;
+                            switch (StrengthGemCustomModelData) {
+                                case 10:
+                                case 30:
+                                    StrengthCircleCooldown = 240L;
+                                    break;
+                                case 50:
+                                    StrengthCircleCooldown = 360L;
+                                    break;
+                                case 70:
+                                case 90:
+                                    StrengthCircleCooldown = 480L;
+                                    break;
+                                default:
+                                    return;
+                            }
+                            StrengthGem_Power_1_StrengthCircle.put(BlissParticleCirclePlayer.getUniqueId(), StrengthCircleCooldown);
+                            StrengthGemActionbar(BlissParticleCirclePlayer);
+                            StrengthCircleRadius(BlissParticleCirclePlayer, radius);
+                            Location BlissParticleCircleLocation = BlissParticleCirclePlayer.getLocation();
+                            PrimaryRGBParticleCircle(BlissParticleCircleLocation, 241, 3, 3, radius);
+                            PrimaryRGBParticleCircleLess(BlissParticleCircleLocation, 241, 3, 3, radius);
+                            for (Entity entity : BlissParticleCirclePlayer.getNearbyEntities(radius, radius, radius)) {
+                                if (entity instanceof LivingEntity && !entity.equals(BlissParticleCirclePlayer)) {
+                                    LivingEntity livingEntity = (LivingEntity) entity;
+                                    for (PotionEffect effect : livingEntity.getActivePotionEffects()) {
+                                        livingEntity.removePotionEffect(effect.getType());
+                                    }
+                                    livingEntity.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected by group " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3A Frailer " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "by " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + BlissParticleCirclePlayer.getName());
+                                    livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 380, 1)); // Adjust duration and amplifier as needed
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+
+
+
+
+
+
+
+@EventHandler
+    public void BʟɪssPᴀʀᴛɪᴄʟᴇSᴛʀᴇɴɢᴛʜLɪɴᴇ(EntityDamageByEntityEvent StrengthLineUser) {
+        if (StrengthLineUser.getDamager() instanceof Player && StrengthLineUser.getEntity() instanceof LivingEntity) {
+            Player StrengthLineAttacker = (Player) StrengthLineUser.getDamager();
+            LivingEntity victim = (LivingEntity) StrengthLineUser.getEntity();
+            ItemStack StrengthGemItem = StrengthLineAttacker.getInventory().getItemInMainHand();
+            if (StrengthGem(StrengthGemItem)) {
+                ItemMeta meta = StrengthGemItem.getItemMeta();
+                PersistentDataContainer data = StrengthLineAttacker.getPersistentDataContainer();
+                boolean STRENGTH_CIRCLE = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+                boolean STRENGTH_LINE = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
+                boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
+                if (!STRENGTH_CIRCLE && !STRENGTH_LINE && !DISABLED_GEM) {
+                    data.set(StrengthLine, PersistentDataType.INTEGER, 1);
+                    int StrengthGemCustomModelData = meta.getCustomModelData();
+                    long StrengthLineCooldown;
+                    switch (StrengthGemCustomModelData) {
+                        case 10:
+                        case 30:
+                            StrengthLineCooldown = 240L;
+                            break;
+                        case 50:
+                            StrengthLineCooldown = 360L;
+                            break;
+                        case 70:
+                        case 90:
+                            StrengthLineCooldown = 480L;
+                            break;
+                        default:
+                            return;
+                    }
+                    StrengthGem_Power_1_StrengthCircle.put(StrengthLineAttacker.getUniqueId(), StrengthLineCooldown);
+                    StrengthGemActionbar(StrengthLineAttacker);
+                    StrengthLineAttacker.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3AFrailer" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + victim.getName());
+                    victim.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3AFrailer" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + StrengthLineAttacker.getName());
+                    for (PotionEffect effect : victim.getActivePotionEffects()) {
+                        victim.removePotionEffect(effect.getType());
+                    }
+                    victim.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 380, 1));
+                    new ParticleLineTask(StrengthLineAttacker, victim, 241, 3, 3).runTaskTimer(this, 0, 2);
+                }
+            }
+        }
+    }
+
+
+
+
+
+if (BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇ.getDamager() instanceof Player && BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇ.getEntity() instanceof LivingEntity) {
+                                if (StrengthGem(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇIᴛᴇᴍ)) {
+                                    StrengthGem_Power_1_StrengthCircle.put(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇAᴛᴛᴀᴄᴋᴇʀ.getUniqueId(), StrengthCircleCooldown);
+                                    StrengthGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇAᴛᴛᴀᴄᴋᴇʀ);
+                                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇAᴛᴛᴀᴄᴋᴇʀ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3AFrailer" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇVɪᴄᴛɪᴍ.getName());
+                                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇVɪᴄᴛɪᴍ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83E\uDD3AFrailer" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇAᴛᴛᴀᴄᴋᴇʀ.getName());
+                                    for (PotionEffect effect : BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇVɪᴄᴛɪᴍ.getActivePotionEffects()) {
+                                        BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇVɪᴄᴛɪᴍ.removePotionEffect(effect.getType());
+                                    }
+                                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇVɪᴄᴛɪᴍ.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 380, 1));
+                                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇVɪᴄᴛɪᴍ, 241, 3, 3).runTaskTimer(this, 0, 2);
+                                }
+                            }
+
+
+
+ if (WealthLineUser.getDamager() instanceof Player && WealthLineUser.getEntity() instanceof LivingEntity) {
+            Player WealthLineAttacker = (Player) WealthLineUser.getDamager();
+            LivingEntity victim = (LivingEntity) WealthLineUser.getEntity();
+            ItemStack WealthGemItem = WealthLineAttacker.getInventory().getItemInMainHand();
+            if (WealthGem(WealthGemItem)) {
+                ItemMeta meta = WealthGemItem.getItemMeta();
+                if (!ᴡᴇᴀʟᴛʜ_ᴄɪʀᴄʟᴇ && !ᴡᴇᴀʟᴛʜ_ʟɪɴᴇ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
+                    data.set(WealthLine, PersistentDataType.INTEGER, 1);
+                    WealthLineAttacker.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(14, 201, 18)) + " \uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(14, 201, 18)) + "\uD83C\uDF40Unfortunate" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(14, 201, 18)) + victim.getName());
+                    victim.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(14, 201, 18)) + " \uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(14, 201, 18)) + "\uD83C\uDF40Unfortunate" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(14, 201, 18)) + WealthLineAttacker.getName());
+                    new ParticleLineTask(WealthLineAttacker, victim, 14, 201, 18).runTaskTimer(this, 0, 2);
+                    int customModelData = meta.getCustomModelData();
+                    long WealthLineCooldown;
+                    switch (customModelData) {
+                        case 12:
+                            WealthLineCooldown = 230L; // 4 minutes
+                            break;
+                        case 32:
+                            WealthLineCooldown = 250L; // 4 minutes
+                            break;
+                        case 52:
+                            WealthLineCooldown = 280L; // 6 minutes
+                            break;
+                        case 72:
+                            WealthLineCooldown = 320L; // 8 minutes
+                            break;
+                        case 92:
+                            WealthLineCooldown = 320L; // 8 minutes
+                            break;
+                        default:
+                            return;
+                    }
+                    WealthGem_Power_1_WealthCircle.put(WealthLineAttacker.getUniqueId(), WealthLineCooldown);
+                    WealthGemActionbar(WealthLineAttacker);
+                    Entity UnfortunateAttacker = WealthLineUser.getDamager();
+                    if (UnfortunateAttacker instanceof Player && victim instanceof Player) {
+                        Player player = (Player) victim;
+                        victim.getPersistentDataContainer().set(UNFORTUNATE, PersistentDataType.INTEGER, 1);
+                        startBossBarTimer(player);
+                    }
+                    if (UnfortunateAttacker instanceof Player && victim instanceof Entity) {
+                        victim.getPersistentDataContainer().set(UNFORTUNATE, PersistentDataType.INTEGER, 1);
+                    }
+                }
+            }
+        }
