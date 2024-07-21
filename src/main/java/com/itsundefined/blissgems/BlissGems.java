@@ -245,6 +245,7 @@ public final class BlissGems extends JavaPlugin implements Listener {
     private Player player;
 
 
+
     @Override
     public void onEnable() {
         // Plugin startup logic
@@ -4150,7 +4151,7 @@ public final class BlissGems extends JavaPlugin implements Listener {
     private final HashMap<UUID, Integer> BlissEnergyGemHealth = new HashMap<>();
 
     @EventHandler
-    public void FUCKU(PlayerDeathEvent event) {
+    public void BlissEnergySystem(PlayerDeathEvent event) {
         Player PlayerKilled = event.getEntity();
         Player PlayerKiller = PlayerKilled.getKiller();
         if (PlayerKiller != null) {
