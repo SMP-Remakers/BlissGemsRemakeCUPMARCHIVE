@@ -7,7 +7,7 @@ commands:
     description: "&7killme"
     usage: "/bliss gem (player) (tier) (1/2)"
     aliases: [ bliss ]
-    permission: bliss.command.bliss
+    permission: op
     permission-message: "&7killme"
   menu:
     description: "Bliss Smp Menu Allows you to get any Bliss Smp Item example: Strength Gem"

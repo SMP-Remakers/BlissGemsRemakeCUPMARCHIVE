@@ -213,8 +213,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
     private final Map<UUID, Integer> testDouble = new HashMap<>();
     private final Map<UUID, Integer> chadStrength = new HashMap<>();
     private static final long TRANSFORMATION_DELAY = 200L;
-    public static final Map<UUID, String> GiftedItems = new HashMap<>();
-    private final Map<UUID, Inventory> WealthGemPocketsInventory = new HashMap<>();
+    private static final Map<UUID, String> GiftedItems = new HashMap<>();
+    public final Map<UUID, Inventory> WealthGemPocketsInventory = new HashMap<>();
     private final Map<UUID, Location> AstraGemSouldCaptureEntityDeath = new HashMap<>();
     private File inventoryFile;
     private FileConfiguration inventoryConfig;
@@ -251,9 +251,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
         // Plugin startup logic
         getCommand("bliss").setExecutor(new Bliss());
         getCommand("menu").setExecutor(new SlashMenu());
+        getCommand("bliss").setExecutor(new SlashBliss());
         getCommand("bliss").setTabCompleter(new SlashBliss());
-        this.getCommand("bliss").setExecutor(new BlissCommandExecutor());
-        this.getCommand("bliss").setTabCompleter(new BlissCommandTabCompleter());
         Bukkit.getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new SlashMenu(), this);
@@ -771,31 +770,31 @@ public final class BlissGems extends SimplePlugin implements Listener {
         }.runTaskTimer(this, 0L, 20L);
     }
 
-    private boolean StrengthGemHeld(Player player) {
+    public boolean StrengthGemHeld(Player player) {
         ItemStack MainHandItem = player.getInventory().getItemInMainHand();
         ItemStack OffHandItem = player.getInventory().getItemInOffHand();
         return StrengthGemDetect(MainHandItem) || StrengthGemDetect(OffHandItem);
     }
 
-    private boolean SpeedGemHeld(Player player) {
+    public boolean SpeedGemHeld(Player player) {
         ItemStack MainHandItem = player.getInventory().getItemInMainHand();
         ItemStack OffHandItem = player.getInventory().getItemInOffHand();
         return SpeedGemDetect(MainHandItem) || SpeedGemDetect(OffHandItem);
     }
 
-    private boolean LifeGemHeld(Player player) {
+    public boolean LifeGemHeld(Player player) {
         ItemStack MainHandItem = player.getInventory().getItemInMainHand();
         ItemStack OffHandItem = player.getInventory().getItemInOffHand();
         return LifeGemDetect(MainHandItem) || LifeGemDetect(OffHandItem);
     }
 
-    private boolean WealthGemHeld(Player player) {
+    public boolean WealthGemHeld(Player player) {
         ItemStack MainHandItem = player.getInventory().getItemInMainHand();
         ItemStack OffHandItem = player.getInventory().getItemInOffHand();
         return WealthGemDetect(MainHandItem) || WealthGemDetect(OffHandItem);
     }
 
-    private boolean PuffGemHeld(Player player) {
+    public boolean PuffGemHeld(Player player) {
         ItemStack MainHandItem = player.getInventory().getItemInMainHand();
         ItemStack OffHandItem = player.getInventory().getItemInOffHand();
         return PuffGemDetect(MainHandItem) || PuffGemDetect(OffHandItem);
@@ -1724,7 +1723,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
             }
 
 
-            player.sendMessage("You don't have permission to do this");
+            //player.sendMessage("You don't have permission to do this");
             return true;
         }
     }
