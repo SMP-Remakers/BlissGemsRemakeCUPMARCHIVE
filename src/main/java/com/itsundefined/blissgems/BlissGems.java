@@ -81,13 +81,13 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
-
+import org.mineacademy.fo.plugin.SimplePlugin;
 import javax.swing.*;
 import javax.swing.text.Style;
 import java.util.stream.Collectors;
 
 
-public final class BlissGems extends JavaPlugin implements Listener {
+public final class BlissGems extends SimplePlugin implements Listener {
     private BossBar bossBar;
     private Horse DimensionalDriftHorse = null;
     private int bossBarDuration = 80; // Duration in seconds
@@ -247,7 +247,7 @@ public final class BlissGems extends JavaPlugin implements Listener {
 
 
     @Override
-    public void onEnable() {
+    public void onPluginStart() {
         // Plugin startup logic
         getCommand("bliss").setExecutor(new Bliss());
         getCommand("menu").setExecutor(new SlashMenu());
@@ -1868,7 +1868,7 @@ public final class BlissGems extends JavaPlugin implements Listener {
 
 
     @Override
-    public void onDisable() {
+    public void onPluginStop() {
         // Plugin shutdown logic
         saveTimers();
         saveInventories();
