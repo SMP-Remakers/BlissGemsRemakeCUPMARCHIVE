@@ -4,6 +4,8 @@ package com.itsundefined.blissgems;
 
 
 
+import com.itsundefined.blissgems.commands.SlashBliss;
+import com.itsundefined.blissgems.commands.SlashMenu;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.md_5.bungee.api.ChatMessageType;
@@ -11,7 +13,6 @@ import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.block.BlockState;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.enchantments.Enchantment;
@@ -31,22 +32,15 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.*;
 import org.bukkit.inventory.*;
-import org.bukkit.util.EulerAngle;
 import org.bukkit.event.inventory.InventoryAction;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.*;
-import org.bukkit.scoreboard.Objective;
 
-import org.bukkit.scoreboard.Score;
-import org.bukkit.scoreboard.Scoreboard;
-import org.bukkit.scoreboard.ScoreboardManager;
 import org.bukkit.entity.Fireball;
-import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.SkullMeta;
-import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -64,9 +58,6 @@ import org.bukkit.entity.Player;
 import net.citizensnpcs.api.event.NPCDamageByEntityEvent;
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.entity.EntityType;
-import org.bukkit.event.HandlerList;
-
 
 
 import java.awt.Color;
@@ -77,13 +68,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import org.bukkit.configuration.file.FileConfiguration;
+
+import org.mineacademy.fo.Common;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
 import org.mineacademy.fo.plugin.SimplePlugin;
-import javax.swing.*;
-import javax.swing.text.Style;
+
 import java.util.stream.Collectors;
 
 
@@ -94,12 +85,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
     private static final UUID DAGGERS_UUID = UUID.fromString("00000000-0000-0000-0000-000000000000");
     private final NamespacedKey UNFORTUNATE = new NamespacedKey(this, "Unfortunate");
     private final NamespacedKey UNFORTUNATE_KEY = new NamespacedKey(this, "Unfortunate");
-    private NamespacedKey SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ;
-    private NamespacedKey SᴘᴇᴇᴅCɪʀᴄʟᴇ;
-    private NamespacedKey LɪғᴇCɪʀᴄʟᴇ;
-    private NamespacedKey WᴇᴀʟᴛʜCɪʀᴄʟᴇ;
-    private NamespacedKey PᴜғғCɪʀᴄʟᴇ;
-    private NamespacedKey FʟᴜxCɪʀᴄʟᴇ;
+    private NamespacedKey strengthcircle;
+    private NamespacedKey speedcircle;
+    private NamespacedKey lifecircle;
+    private NamespacedKey wealthcircle;
+    private NamespacedKey puffcricle;
+    private NamespacedKey fluxcircle;
     private NamespacedKey Daggers;
     private NamespacedKey FireBall;
     private NamespacedKey Disabled_Gem;
@@ -108,44 +99,44 @@ public final class BlissGems extends SimplePlugin implements Listener {
     private NamespacedKey LifeLine;
     private NamespacedKey WealthLine;
     private NamespacedKey PuffLine;
-    private NamespacedKey CʜᴀᴅSᴛʀᴇɴɢᴛʜ;
+    private NamespacedKey chadstrength;
     private NamespacedKey Speed_Storm_Circle;
     private NamespacedKey ChadStrengthParticleCase1;
     private NamespacedKey ChadStrengthParticleCase2;
     private NamespacedKey ChadStrengthParticleCase3;
     private NamespacedKey ChadStrengthParticleCase4;
-    private NamespacedKey DᴏᴜʙʟᴇJᴜᴍᴘ;
-    private NamespacedKey CɪʀᴄʟᴇOғLɪғᴇ;
+    private NamespacedKey doublejump;
+    private NamespacedKey circleoflife;
     private NamespacedKey Unfortunate;
-    private NamespacedKey RɪᴄʜRᴜsʜ;
+    private NamespacedKey richrush;
     private NamespacedKey Dash;
-    private NamespacedKey Dᴀɢɢᴇʀs;
-    private NamespacedKey CɪʀᴄʟᴇOғLɪғᴇVɪᴄᴛɪᴍ;
+    private NamespacedKey daggers;
+    private NamespacedKey circleoflifevictim;
     private NamespacedKey Cozy_Campfire;
-    private NamespacedKey CʜᴀᴅSᴛʀᴇɴɢᴛʜPᴀʀᴛɪᴄʟᴇs;
-    private NamespacedKey TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ;
+    private NamespacedKey chadstrengthparticles;
+    private NamespacedKey terminalvelocity;
     private final List<String> LifeGemDamage = Arrays.asList("ZOMBIE", "SKELETON", "WITHER_SKELETON", "HUSK", "DROWNED");
-    private NamespacedKey FɪʀsᴛJᴏɪɴ;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_12;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_11;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_10;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_9;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_8;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_7;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_6;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_5;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_4;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_3;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_2;
-    private NamespacedKey BʟɪssEɴᴇʀɢʏ_1;
-    private NamespacedKey TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ;
+    private NamespacedKey firstjoin;
+    private NamespacedKey blissenergy_12;
+    private NamespacedKey blissenergy_11;
+    private NamespacedKey blissenergy_10;
+    private NamespacedKey blissenergy_9;
+    private NamespacedKey blissenergy_8;
+    private NamespacedKey blissenergy_7;
+    private NamespacedKey blissenergy_6;
+    private NamespacedKey blissenergy_5;
+    private NamespacedKey blissenergy_4;
+    private NamespacedKey blissenergy_3;
+    private NamespacedKey blissenergy_2;
+    private NamespacedKey blissenergy_1;
+    private NamespacedKey terminalvelocitycooldown;
     private NamespacedKey BlissParticlesLess;
     private NamespacedKey BlissParticlesDefault;
-    private NamespacedKey AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs;
-    private NamespacedKey Cʀᴏᴜᴄʜɪɴɢ_Oɴ_Cʀᴏᴘ;
-    private NamespacedKey Uɴʙᴏᴜɴᴅ;
-    private NamespacedKey FɪʀᴇBᴀʟʟ;
-    private NamespacedKey FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs;
+    private NamespacedKey astralprojectionparticles;
+    private NamespacedKey crouching_on_crop;
+    private NamespacedKey unbound;
+    private NamespacedKey fireball;
+    private NamespacedKey fireballchargingparticles;
     private NamespacedKey Dimensional_Drift;
     private BukkitRunnable particleTask;
     private BukkitRunnable teleportTask;
@@ -250,12 +241,10 @@ public final class BlissGems extends SimplePlugin implements Listener {
     public void onPluginStart() {
         // Plugin startup logic
 
-        getCommand("bliss").setExecutor(new Bliss());
         getCommand("menu").setExecutor(new SlashMenu());
         getCommand("bliss").setExecutor(new SlashBliss());
         getCommand("bliss").setTabCompleter(new SlashBliss());
         Bukkit.getPluginManager().registerEvents(this, this);
-        Bukkit.getPluginManager().registerEvents(new Events(), this);
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new SlashMenu(), this);
         new GemEffects().runTaskTimer(this, 0, 1);
@@ -263,12 +252,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
         System.out.println("Bliss by Pro4D/aglerr/ITsUndefined_");
         System.out.println("Authors: aglerr and Pro4D");
         System.out.println("Remakers: ITsUndefined_");
-        SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ = new NamespacedKey(this, "STRENGTH_CIRCLE");
-        SᴘᴇᴇᴅCɪʀᴄʟᴇ = new NamespacedKey(this, "SPEED_CIRCLE");
-        LɪғᴇCɪʀᴄʟᴇ = new NamespacedKey(this, "LIFE_CIRCLE");
-        WᴇᴀʟᴛʜCɪʀᴄʟᴇ = new NamespacedKey(this, "WEALTH_CIRCLE");
-        PᴜғғCɪʀᴄʟᴇ = new NamespacedKey(this, "PUFF_CIRCLE");
-        FʟᴜxCɪʀᴄʟᴇ = new NamespacedKey(this, "FLUX_CIRCLE");
+        strengthcircle = new NamespacedKey(this, "STRENGTH_CIRCLE");
+        speedcircle = new NamespacedKey(this, "SPEED_CIRCLE");
+        lifecircle = new NamespacedKey(this, "LIFE_CIRCLE");
+        wealthcircle = new NamespacedKey(this, "WEALTH_CIRCLE");
+        puffcricle = new NamespacedKey(this, "PUFF_CIRCLE");
+        fluxcircle = new NamespacedKey(this, "FLUX_CIRCLE");
         FireBall = new NamespacedKey(this, "FIREBALL");
         Daggers = new NamespacedKey(this, "DAGGERS");
         Disabled_Gem = new NamespacedKey(this, "DISABLED_GEM");
@@ -277,44 +266,44 @@ public final class BlissGems extends SimplePlugin implements Listener {
         LifeLine = new NamespacedKey(this, "LIFE_LINE");
         WealthLine = new NamespacedKey(this, "WEALTH_LINE");
         PuffLine = new NamespacedKey(this, "PUFF_LINE");
-        CʜᴀᴅSᴛʀᴇɴɢᴛʜ = new NamespacedKey(this, "CHAD_STRENGTH");
+        chadstrength = new NamespacedKey(this, "CHAD_STRENGTH");
         Speed_Storm_Circle = new NamespacedKey(this, "SPEED_STORM_CIRCLE");
-        CɪʀᴄʟᴇOғLɪғᴇ = new NamespacedKey(this, "CIRCLE_OF_LIFE");
+        circleoflife = new NamespacedKey(this, "CIRCLE_OF_LIFE");
         Unfortunate = new NamespacedKey(this, "UNFORTUNATE");
-        DᴏᴜʙʟᴇJᴜᴍᴘ = new NamespacedKey(this, "DoubleJump");
-        RɪᴄʜRᴜsʜ = new NamespacedKey(this, "RICH_RUSH");
-        FɪʀsᴛJᴏɪɴ = new NamespacedKey(this, "FIRST_JOIN");
-        CɪʀᴄʟᴇOғLɪғᴇVɪᴄᴛɪᴍ = new NamespacedKey(this, "CIRCLE_OF_LIFE_VICTIM");
+        doublejump = new NamespacedKey(this, "DoubleJump");
+        richrush = new NamespacedKey(this, "RICH_RUSH");
+        firstjoin = new NamespacedKey(this, "FIRST_JOIN");
+        circleoflifevictim = new NamespacedKey(this, "CIRCLE_OF_LIFE_VICTIM");
         Dash = new NamespacedKey(this, "DASH");
         Cozy_Campfire = new NamespacedKey(this, "COZYCAMPFIRE");
         Dimensional_Drift = new NamespacedKey(this, "DIMENSIONAL_DRIFT");
-        BʟɪssEɴᴇʀɢʏ_12 = new NamespacedKey(this, "BlissGemHealth.12");
-        BʟɪssEɴᴇʀɢʏ_11 = new NamespacedKey(this, "BlissGemHealth.11");
-        BʟɪssEɴᴇʀɢʏ_10 = new NamespacedKey(this, "BlissGemHealth.10");
-        BʟɪssEɴᴇʀɢʏ_9 = new NamespacedKey(this, "BlissGemHealth.9");
-        BʟɪssEɴᴇʀɢʏ_8 = new NamespacedKey(this, "BlissGemHealth.8");
-        BʟɪssEɴᴇʀɢʏ_7 = new NamespacedKey(this, "BlissGemHealth.7");
-        BʟɪssEɴᴇʀɢʏ_6 = new NamespacedKey(this, "BlissGemHealth.6");
-        BʟɪssEɴᴇʀɢʏ_5 = new NamespacedKey(this, "BlissGemHealth.5");
-        BʟɪssEɴᴇʀɢʏ_4 = new NamespacedKey(this, "BlissGemHealth.4");
-        BʟɪssEɴᴇʀɢʏ_3 = new NamespacedKey(this, "BlissGemHealth.3");
-        BʟɪssEɴᴇʀɢʏ_2 = new NamespacedKey(this, "BlissGemHealth.2");
-        BʟɪssEɴᴇʀɢʏ_1 = new NamespacedKey(this, "BlissGemHealth.1");
-        TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ = new NamespacedKey(this, "TerminalVelocityCooldown");
-        FɪʀᴇBᴀʟʟ = new NamespacedKey(this, "FireBall");
-        Dᴀɢɢᴇʀs = new NamespacedKey(this, "DaggersFired");
-        TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ = new NamespacedKey(this, "TerminalVelocity");
-        FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs = new NamespacedKey(this, "FireBallChargingParticles");
-        Uɴʙᴏᴜɴᴅ = new NamespacedKey(this, "UNBOUND");
+        blissenergy_12 = new NamespacedKey(this, "BlissGemHealth.12");
+        blissenergy_11 = new NamespacedKey(this, "BlissGemHealth.11");
+        blissenergy_10 = new NamespacedKey(this, "BlissGemHealth.10");
+        blissenergy_9 = new NamespacedKey(this, "BlissGemHealth.9");
+        blissenergy_8 = new NamespacedKey(this, "BlissGemHealth.8");
+        blissenergy_7 = new NamespacedKey(this, "BlissGemHealth.7");
+        blissenergy_6 = new NamespacedKey(this, "BlissGemHealth.6");
+        blissenergy_5 = new NamespacedKey(this, "BlissGemHealth.5");
+        blissenergy_4 = new NamespacedKey(this, "BlissGemHealth.4");
+        blissenergy_3 = new NamespacedKey(this, "BlissGemHealth.3");
+        blissenergy_2 = new NamespacedKey(this, "BlissGemHealth.2");
+        blissenergy_1 = new NamespacedKey(this, "BlissGemHealth.1");
+        terminalvelocitycooldown = new NamespacedKey(this, "TerminalVelocityCooldown");
+        fireball = new NamespacedKey(this, "FireBall");
+        daggers = new NamespacedKey(this, "DaggersFired");
+        terminalvelocity = new NamespacedKey(this, "TerminalVelocity");
+        fireballchargingparticles = new NamespacedKey(this, "FireBallChargingParticles");
+        unbound = new NamespacedKey(this, "UNBOUND");
         BlissParticlesLess = new NamespacedKey(this, "BlissParticleLevel.2");
         BlissParticlesDefault = new NamespacedKey(this, "BlissParticleLevel.3");
-        CʜᴀᴅSᴛʀᴇɴɢᴛʜPᴀʀᴛɪᴄʟᴇs = new NamespacedKey(this, "CHAD_STRENGTH_PARTICLES");
-        AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs = new NamespacedKey(this, "ASTRAL_PROJECTION_PARTICLES");
+        chadstrengthparticles = new NamespacedKey(this, "CHAD_STRENGTH_PARTICLES");
+        astralprojectionparticles = new NamespacedKey(this, "ASTRAL_PROJECTION_PARTICLES");
         ChadStrengthParticleCase4 = new NamespacedKey(this, "ChadStrengthParticleCase.4");
         ChadStrengthParticleCase3 = new NamespacedKey(this, "ChadStrengthParticleCase.3");
         ChadStrengthParticleCase2 = new NamespacedKey(this, "ChadStrengthParticleCase.2");
         ChadStrengthParticleCase1 = new NamespacedKey(this, "ChadStrengthParticleCase.1");
-        Cʀᴏᴜᴄʜɪɴɢ_Oɴ_Cʀᴏᴘ = new NamespacedKey(this, "CROUCHING_ON_CROP");
+        crouching_on_crop = new NamespacedKey(this, "CROUCHING_ON_CROP");
         getCommand("cooldown").setTabCompleter(this);
         bossBar = Bukkit.createBossBar("Boss Bar Title", BarColor.RED, BarStyle.SOLID);
         bossBar.setProgress(0.0);
@@ -361,9 +350,9 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     }
                     if (LifeGem(MainHandItem) || LifeGem(OffHandItem)) {
                         PersistentDataContainer data = player.getPersistentDataContainer();
-                        data.remove(Cʀᴏᴜᴄʜɪɴɢ_Oɴ_Cʀᴏᴘ);
+                        data.remove(crouching_on_crop);
                     }
-                    if (!player.getPersistentDataContainer().has(DᴏᴜʙʟᴇJᴜᴍᴘ, PersistentDataType.INTEGER) && PuffGem(MainHandItem) || PuffGem(OffHandItem) || Puffgem(MainHandItem) || Puffgem(OffHandItem)) {
+                    if (!player.getPersistentDataContainer().has(doublejump, PersistentDataType.INTEGER) && PuffGem(MainHandItem) || PuffGem(OffHandItem) || Puffgem(MainHandItem) || Puffgem(OffHandItem)) {
                         player.setAllowFlight(true);
                     } else {
                         if (player.getGameMode() == GameMode.SURVIVAL) {
@@ -623,12 +612,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
         }.runTaskTimer(this, 0, 1);
         Bukkit.getOnlinePlayers().forEach(player -> {
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.remove(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ);
-            data.remove(SᴘᴇᴇᴅCɪʀᴄʟᴇ);
-            data.remove(LɪғᴇCɪʀᴄʟᴇ);
-            data.remove(WᴇᴀʟᴛʜCɪʀᴄʟᴇ);
-            data.remove(PᴜғғCɪʀᴄʟᴇ);
-            data.remove(FʟᴜxCɪʀᴄʟᴇ);
+            data.remove(strengthcircle);
+            data.remove(speedcircle);
+            data.remove(lifecircle);
+            data.remove(wealthcircle);
+            data.remove(puffcricle);
+            data.remove(fluxcircle);
             data.remove(Daggers);
             data.remove(FireBall);
             data.remove(Disabled_Gem);
@@ -637,22 +626,22 @@ public final class BlissGems extends SimplePlugin implements Listener {
             data.remove(LifeLine);
             data.remove(WealthLine);
             data.remove(PuffLine);
-            data.remove(FɪʀsᴛJᴏɪɴ);
-            data.remove(AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs);
-            data.remove(CʜᴀᴅSᴛʀᴇɴɢᴛʜ);
+            data.remove(firstjoin);
+            data.remove(astralprojectionparticles);
+            data.remove(chadstrength);
             data.remove(Speed_Storm_Circle);
-            data.remove(CɪʀᴄʟᴇOғLɪғᴇ);
+            data.remove(circleoflife);
             data.remove(Unfortunate);
             data.remove(Dash);
             data.remove(Cozy_Campfire);
             data.remove(Dimensional_Drift);
-            data.remove(RɪᴄʜRᴜsʜ);
-            data.remove(Uɴʙᴏᴜɴᴅ);
-            data.remove(CʜᴀᴅSᴛʀᴇɴɢᴛʜPᴀʀᴛɪᴄʟᴇs);
-            data.remove(Cʀᴏᴜᴄʜɪɴɢ_Oɴ_Cʀᴏᴘ);
-            data.remove(Dᴀɢɢᴇʀs);
-            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ);
-            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ);
+            data.remove(richrush);
+            data.remove(unbound);
+            data.remove(chadstrengthparticles);
+            data.remove(crouching_on_crop);
+            data.remove(daggers);
+            data.remove(terminalvelocity);
+            data.remove(terminalvelocitycooldown);
             this.random = new Random();
             loadTimers();
             inventoryFile = new File(getDataFolder(), "inventories.yml");
@@ -827,7 +816,6 @@ public final class BlissGems extends SimplePlugin implements Listener {
         StrengthGemChadStrength(StrengthGem_Power_3_ChadStrength, playerId);
         StrengthGemChadStrengthParticles(StrengthGem_Power_8_ChadStrength, playerId);
     }
-
     private void UpdateSpeedGemTimers(Player player) {
         UUID playerId = player.getUniqueId();
         SpeedGemSpeedCircle(SpeedGem_Power_1_SpeedCircle, playerId);
@@ -915,7 +903,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(FɪʀᴇBᴀʟʟ);
+                            data.remove(fireball);
                         }
                     }
                     return 0L;
@@ -967,7 +955,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(Dᴀɢɢᴇʀs); // Remove specific data
+                            data.remove(daggers); // Remove specific data
 
                         }
                     }
@@ -993,7 +981,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(PᴜғғCɪʀᴄʟᴇ);
+                            data.remove(puffcricle);
                             data.remove(PuffLine);
                         }
                     }
@@ -1018,7 +1006,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(DᴏᴜʙʟᴇJᴜᴍᴘ);
+                            data.remove(doublejump);
                         }
                     }
                     return 0L;
@@ -1066,7 +1054,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(WᴇᴀʟᴛʜCɪʀᴄʟᴇ);
+                            data.remove(wealthcircle);
                             data.remove(WealthLine);
                         }
                     }
@@ -1091,7 +1079,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(RɪᴄʜRᴜsʜ);
+                            data.remove(richrush);
                         }
                     }
                     return 0L;
@@ -1116,7 +1104,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(CɪʀᴄʟᴇOғLɪғᴇ);
+                            data.remove(circleoflife);
                         }
                     }
                     return 0L;
@@ -1140,7 +1128,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(LɪғᴇCɪʀᴄʟᴇ);
+                            data.remove(lifecircle);
                             data.remove(LifeLine);
                         }
                     }
@@ -1165,7 +1153,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(SᴘᴇᴇᴅCɪʀᴄʟᴇ);
+                            data.remove(speedcircle);
                             data.remove(SpeedLine);
                         }
                     }
@@ -1190,8 +1178,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ);
-                            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ);
+                            data.remove(terminalvelocity);
+                            data.remove(terminalvelocitycooldown);
                         }
                     }
                     return 0L;
@@ -1228,13 +1216,9 @@ public final class BlissGems extends SimplePlugin implements Listener {
             return time - 1;
         });
     }
-
-
+    // should work 
     private void StrengthGemChadStrength(Map<UUID, Long> timerMap, UUID playerId) {
-        StrengthGemChadStrength(timerMap, playerId, 0L);
-    }
-
-    private void StrengthGemChadStrength(Map<UUID, Long> timerMap, UUID playerId, long resetTime) {
+        long resetTime = 0L;
         timerMap.compute(playerId, (uuid, time) -> {
             if (time == null || time <= 0) {
                 if (resetTime > 0) {
@@ -1244,7 +1228,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(CʜᴀᴅSᴛʀᴇɴɢᴛʜ);
+                            data.remove(chadstrength);
                         }
                     }
                     return 0L;
@@ -1253,7 +1237,6 @@ public final class BlissGems extends SimplePlugin implements Listener {
             return time - 1;
         });
     }
-
 
     private void StrengthGemStrengthCircle(Map<UUID, Long> timerMap, UUID playerId) {
         StrengthGemStrengthCircle(timerMap, playerId, 0L);
@@ -1269,7 +1252,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         Player player = Bukkit.getPlayer(playerId);
                         if (player != null) {
                             PersistentDataContainer data = player.getPersistentDataContainer();
-                            data.remove(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ);
+                            data.remove(strengthcircle);
                             data.remove(StrengthLine);
                         }
                     }
@@ -1343,10 +1326,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
         String StrengthGem_Power_2_Enchanting = formatTime(StrengthGemPower_2, net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83D\uDD2E ");
         String StrengthGem_Power_3_ChadStrength = formatTime(StrengthGemPower_3, net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "⚔ ");
         player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(StrengthGem_Power_1_StrengthCircle + " " + StrengthGem_Power_2_Enchanting + " " + StrengthGem_Power_3_ChadStrength));
+
     }
 
+
     private void SpeedGemActionbar(Player player) {
-        if (!player.getPersistentDataContainer().has(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ, PersistentDataType.INTEGER)) {
+        if (!player.getPersistentDataContainer().has(terminalvelocitycooldown, PersistentDataType.INTEGER)) {
             long SpeedGemPower_1 = SpeedGem_Power_1_SpeedCircle.getOrDefault(player.getUniqueId(), 0L);
             long SpeedGemPower_2 = SpeedGem_Power_2_Enchanting.getOrDefault(player.getUniqueId(), 0L);
             long SpeedGemPower_3 = SpeedGem_Power_3_SpeedStormCircle.getOrDefault(player.getUniqueId(), 0L);
@@ -1355,7 +1340,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
             String SpeedGem_Power_3_SpeedStormCircle = formatTime(SpeedGemPower_3, net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDF29 ");
             player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(SpeedGem_Power_1_SpeedCircle + " " + SpeedGem_Power_2_Enchanting + " " + SpeedGem_Power_3_SpeedStormCircle));
         }
-        if (player.getPersistentDataContainer().has(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ, PersistentDataType.INTEGER)) {
+        if (player.getPersistentDataContainer().has(terminalvelocitycooldown, PersistentDataType.INTEGER)) {
             long SpeedGemPower_1 = SpeedGem_Power_1_SpeedCircle.getOrDefault(player.getUniqueId(), 0L);
             long SpeedGemPower_3 = SpeedGem_Power_3_SpeedStormCircle.getOrDefault(player.getUniqueId(), 0L);
             String SpeedGem_Power_1_SpeedCircle = formatTime(SpeedGemPower_1, net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAF ");
@@ -1819,10 +1804,10 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     int radius = FluxGemCustomModelData(CustomModelData);
                     if (radius > 0) {
                         PersistentDataContainer data = FluxCirclePlayer.getPersistentDataContainer();
-                        boolean FLUX_CIRCLE = data.getOrDefault(FʟᴜxCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+                        boolean FLUX_CIRCLE = data.getOrDefault(fluxcircle, PersistentDataType.INTEGER, 0) == 1;
                         boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
                         if (!FLUX_CIRCLE && !DISABLED_GEM) {
-                            data.set(FʟᴜxCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            data.set(fluxcircle, PersistentDataType.INTEGER, 1);
                             FluxCircleRadius(FluxCirclePlayer, radius);
                             Location loc = FluxCirclePlayer.getLocation();
                             PrimaryRGBParticleCircle(loc, 0, 255, 255, radius);
@@ -2192,34 +2177,34 @@ public final class BlissGems extends SimplePlugin implements Listener {
             // Accessing the PersistentDataContainer here
             PersistentDataContainer data = player.getPersistentDataContainer();
             data.set(BlissParticlesLess, PersistentDataType.INTEGER, 1);
-            data.remove(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ);
-            data.remove(SᴘᴇᴇᴅCɪʀᴄʟᴇ);
-            data.remove(LɪғᴇCɪʀᴄʟᴇ);
-            data.remove(WᴇᴀʟᴛʜCɪʀᴄʟᴇ);
-            data.remove(FɪʀsᴛJᴏɪɴ);
-            data.remove(PᴜғғCɪʀᴄʟᴇ);
+            data.remove(strengthcircle);
+            data.remove(speedcircle);
+            data.remove(lifecircle);
+            data.remove(wealthcircle);
+            data.remove(firstjoin);
+            data.remove(puffcricle);
             data.remove(StrengthLine);
             data.remove(SpeedLine);
             data.remove(LifeLine);
             data.remove(WealthLine);
             data.remove(PuffLine);
             data.remove(Unfortunate);
-            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ);
-            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ);
-            data.remove(BʟɪssEɴᴇʀɢʏ_12);
-            data.remove(BʟɪssEɴᴇʀɢʏ_11);
-            data.remove(BʟɪssEɴᴇʀɢʏ_10);
-            data.remove(BʟɪssEɴᴇʀɢʏ_9);
-            data.remove(BʟɪssEɴᴇʀɢʏ_8);
-            data.remove(BʟɪssEɴᴇʀɢʏ_7);
-            data.remove(BʟɪssEɴᴇʀɢʏ_6);
-            data.remove(BʟɪssEɴᴇʀɢʏ_5);
-            data.remove(BʟɪssEɴᴇʀɢʏ_4);
-            data.remove(BʟɪssEɴᴇʀɢʏ_3);
-            data.remove(BʟɪssEɴᴇʀɢʏ_2);
-            data.remove(BʟɪssEɴᴇʀɢʏ_1);
-            data.remove(FɪʀᴇBᴀʟʟ);
-            data.remove(FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs);
+            data.remove(terminalvelocitycooldown);
+            data.remove(terminalvelocity);
+            data.remove(blissenergy_12);
+            data.remove(blissenergy_11);
+            data.remove(blissenergy_10);
+            data.remove(blissenergy_9);
+            data.remove(blissenergy_8);
+            data.remove(blissenergy_7);
+            data.remove(blissenergy_6);
+            data.remove(blissenergy_5);
+            data.remove(blissenergy_4);
+            data.remove(blissenergy_3);
+            data.remove(blissenergy_2);
+            data.remove(blissenergy_1);
+            data.remove(fireball);
+            data.remove(fireballchargingparticles);
         } else {
             sender.sendMessage("Only players can use this command!");
         }
@@ -3393,7 +3378,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
         ItemStack PuffGemItem = PuffCircleCooldownPlayer.getInventory().getItemInMainHand();
         if (PuffCircleCooldown.getAction() == Action.LEFT_CLICK_AIR || PuffCircleCooldown.getAction() == Action.LEFT_CLICK_BLOCK) {
             if (PuffGem(PuffGemItem) || PuffGem(PuffGemItem)) {
-                if (PuffCircleCooldownPlayer.getPersistentDataContainer().has(PᴜғғCɪʀᴄʟᴇ, PersistentDataType.INTEGER)) {
+                if (PuffCircleCooldownPlayer.getPersistentDataContainer().has(puffcricle, PersistentDataType.INTEGER)) {
                     UUID playerId = PuffCircleCooldownPlayer.getUniqueId();
                     if (PuffGem_Power_1_PuffCircle.containsKey(playerId)) {
                         long time = PuffGem_Power_1_PuffCircle.get(playerId);
@@ -4051,8 +4036,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
     public void GemRoll(PlayerJoinEvent GemRoll) {
         Player player = GemRoll.getPlayer();
         PersistentDataContainer data = player.getPersistentDataContainer();
-        boolean FIRSTJOIN = data.getOrDefault(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 0) == 1;
-        boolean Pristine = data.getOrDefault(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 0) == 1;
+        boolean FIRSTJOIN = data.getOrDefault(firstjoin, PersistentDataType.INTEGER, 0) == 1;
+        boolean Pristine = data.getOrDefault(blissenergy_6, PersistentDataType.INTEGER, 0) == 1;
         if (!FIRSTJOIN && !Pristine) {
             int GemRandom = getRandomNumber();
             if (GemRandom == 1) {
@@ -4065,8 +4050,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 StrengthGemItemMeta.setCustomModelData(10);
                 StrengthGem.setItemMeta(StrengthGemItemMeta);
                 player.getInventory().addItem(StrengthGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             } else if (GemRandom == 2) {
                 ItemStack SpeedGem = new ItemStack(Material.AMETHYST_SHARD);
                 ItemMeta SpeedGemItemMeta = SpeedGem.getItemMeta();
@@ -4077,8 +4062,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 SpeedGemItemMeta.setCustomModelData(8);
                 SpeedGem.setItemMeta(SpeedGemItemMeta);
                 player.getInventory().addItem(SpeedGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             } else if (GemRandom == 3) {
                 ItemStack LifeGem = new ItemStack(Material.AMETHYST_SHARD);
                 ItemMeta LifeGemItemMeta = LifeGem.getItemMeta();
@@ -4089,8 +4074,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 LifeGemItemMeta.setCustomModelData(4);
                 LifeGem.setItemMeta(LifeGemItemMeta);
                 player.getInventory().addItem(LifeGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             } else if (GemRandom == 4) {
                 ItemStack WealthGem = new ItemStack(Material.AMETHYST_SHARD);
                 ItemMeta WealthGemItemMeta = WealthGem.getItemMeta();
@@ -4102,8 +4087,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 WealthGemItemMeta.setCustomModelData(12);
                 WealthGem.setItemMeta(WealthGemItemMeta);
                 player.getInventory().addItem(WealthGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             } else if (GemRandom == 5) {
                 ItemStack PuffGem = new ItemStack(Material.AMETHYST_SHARD);
                 ItemMeta PuffGemItemMeta = PuffGem.getItemMeta();
@@ -4114,8 +4099,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 PuffGemItemMeta.setCustomModelData(6);
                 PuffGem.setItemMeta(PuffGemItemMeta);
                 player.getInventory().addItem(PuffGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             } else if (GemRandom == 7) {
                 ItemStack FireGem = new ItemStack(Material.AMETHYST_SHARD);
                 ItemMeta FireGemItemMeta = FireGem.getItemMeta();
@@ -4126,8 +4111,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 FireGemItemMeta.setCustomModelData(2);
                 FireGem.setItemMeta(FireGemItemMeta);
                 player.getInventory().addItem(FireGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             } else if (GemRandom == 8) {
                 ItemStack FluxGem = new ItemStack(Material.AMETHYST_SHARD);
                 ItemMeta FluxGemItemMeta = FluxGem.getItemMeta();
@@ -4138,8 +4123,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 FluxGemItemMeta.setCustomModelData(16);
                 FluxGem.setItemMeta(FluxGemItemMeta);
                 player.getInventory().addItem(FluxGem);
-                data.set(FɪʀsᴛJᴏɪɴ, PersistentDataType.INTEGER, 1);
-                data.set(BʟɪssEɴᴇʀɢʏ_6, PersistentDataType.INTEGER, 1);
+                data.set(firstjoin, PersistentDataType.INTEGER, 1);
+                data.set(blissenergy_6, PersistentDataType.INTEGER, 1);
             }
         }
     }
@@ -4569,12 +4554,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
             if (FireGem(FireGemItem)) {
                 ItemMeta meta = FireGemItem.getItemMeta();
                 PersistentDataContainer data = FireBallPlayer.getPersistentDataContainer();
-                boolean ғɪʀᴇ_ʙᴀʟʟ = data.getOrDefault(FɪʀᴇBᴀʟʟ, PersistentDataType.INTEGER, 0) == 1;
-                boolean ғɪʀᴇ_ʙᴀʟʟ_ᴘᴀʀᴛɪᴄʟᴇs = data.getOrDefault(FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER, 0) == 1;
+                boolean ғɪʀᴇ_ʙᴀʟʟ = data.getOrDefault(fireball, PersistentDataType.INTEGER, 0) == 1;
+                boolean ғɪʀᴇ_ʙᴀʟʟ_ᴘᴀʀᴛɪᴄʟᴇs = data.getOrDefault(fireballchargingparticles, PersistentDataType.INTEGER, 0) == 1;
                 boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
                 if (!ғɪʀᴇ_ʙᴀʟʟ && !ғɪʀᴇ_ʙᴀʟʟ_ᴘᴀʀᴛɪᴄʟᴇs && !DISABLED_GEM) {
-                    data.set(FɪʀᴇBᴀʟʟ, PersistentDataType.INTEGER, 1);
-                    data.set(FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER, 1);
+                    data.set(fireball, PersistentDataType.INTEGER, 1);
+                    data.set(fireballchargingparticles, PersistentDataType.INTEGER, 1);
                     FireBallPlayer.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 129, 32)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "Charging " + ChatColor.WHITE + "\uD83E\uDDE8" + net.md_5.bungee.api.ChatColor.of(new Color(254, 129, 32)) + "fireball");
                     ғɪʀᴇʙᴀʟʟ.setCancelled(true);
                     if (FireBallChargingFireGem.containsKey(playerUUID)) return;
@@ -4598,7 +4583,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
             UUID playerUUID = player.getUniqueId();
             PersistentDataContainer data = player.getPersistentDataContainer();
             if (FireGem(FireGemItem)) {
-                data.set(FɪʀᴇBᴀʟʟ, PersistentDataType.INTEGER, 1);
+                data.set(fireball, PersistentDataType.INTEGER, 1);
                 ItemMeta meta = FireGemItem.getItemMeta();
                 int FireGemCustomModelData = meta.getCustomModelData();
                 long FireBallCooldown;
@@ -4625,7 +4610,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                         launchFireball(player, playerUUID);
                         FireBallPlayerData(playerUUID);
                         player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 129, 32)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have launched a " + net.md_5.bungee.api.ChatColor.of(new Color(254, 129, 32)) + "fireball");
-                        data.remove(FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs);
+                        data.remove(fireballchargingparticles);
                     }
                 }
             }
@@ -4849,9 +4834,9 @@ public final class BlissGems extends SimplePlugin implements Listener {
         int currentScore = DaggersFired.getOrDefault(DaggerFired, 0);
         if (ᴅᴀɢɢᴇʀs.getAction() == Action.LEFT_CLICK_AIR || ᴅᴀɢɢᴇʀs.getAction() == Action.LEFT_CLICK_BLOCK) {
             PersistentDataContainer data = DaggersPlayer.getPersistentDataContainer();
-            boolean DᴀɢɢᴇʀsFɪʀᴇᴅ = data.getOrDefault(Dᴀɢɢᴇʀs, PersistentDataType.INTEGER, 0) == 1;
+            boolean daggersFɪʀᴇᴅ = data.getOrDefault(daggers, PersistentDataType.INTEGER, 0) == 1;
             boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
-            if (!DᴀɢɢᴇʀsFɪʀᴇᴅ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
+            if (!daggersFɪʀᴇᴅ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
                 if (AstraGem(AstraGemItem)) {
                     currentScore++;
                     DaggersFired.put(DaggerFired, currentScore);
@@ -4957,7 +4942,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                             daggersArmorStand[0].remove();
                             daggersArmorStand[0] = null;
                             playerArmorStands.put(playerId, daggersArmorStand);
-                            data.set(Dᴀɢɢᴇʀs, PersistentDataType.INTEGER, 1);
+                            data.set(daggers, PersistentDataType.INTEGER, 1);
                             ItemMeta meta = AstraGemItem.getItemMeta();
                             int AstraGemCustomModelData = meta.getCustomModelData();
                             long DaggersCooldown;
@@ -4996,12 +4981,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
         if (AstralProjection.getAction() == Action.RIGHT_CLICK_AIR || AstralProjection.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (AstraGem(AstraGemItem)) {
                 PersistentDataContainer data = AstralProjectionPlayer.getPersistentDataContainer();
-                boolean ASTRAL_PROJECTION_PARTICLES = data.getOrDefault(AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER, 0) == 1;
-                boolean UNBOUND = data.getOrDefault(Uɴʙᴏᴜɴᴅ, PersistentDataType.INTEGER, 0) == 1;
+                boolean ASTRAL_PROJECTION_PARTICLES = data.getOrDefault(astralprojectionparticles, PersistentDataType.INTEGER, 0) == 1;
+                boolean UNBOUND = data.getOrDefault(unbound, PersistentDataType.INTEGER, 0) == 1;
                 boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
                 if (!UNBOUND && !ASTRAL_PROJECTION_PARTICLES && !DISABLED_GEM) {
-                    data.set(AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER, 1);
-                    data.set(Uɴʙᴏᴜɴᴅ, PersistentDataType.INTEGER, 1);
+                    data.set(astralprojectionparticles, PersistentDataType.INTEGER, 1);
+                    data.set(unbound, PersistentDataType.INTEGER, 1);
                     String AstralProjectionPlayerName = AstralProjectionPlayer.getName();
                     NPC npc = CitizensAPI.getNPCRegistry().createNPC(EntityType.PLAYER, AstralProjectionPlayerName);
                     Location AstralProjectionPlayerLocation = AstralProjectionPlayer.getLocation();
@@ -5050,7 +5035,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     npc.destroy();
                     AstralProjectionNPC.remove(AstralHitEntityPlayer.getUniqueId());
                     PersistentDataContainer data = AstralHitEntityPlayer.getPersistentDataContainer();
-                    data.remove(AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs);
+                    data.remove(astralprojectionparticles);
                     AstralHitEntityPlayer.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(160, 31, 255)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "Spooked " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + AstralHitEntity.getName() + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " for " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "10 " + ChatColor.GRAY + "seconds");
                     if (AstralHitEntity instanceof LivingEntity) {
                         LivingEntity AstralHitEntityLivingEntity = (LivingEntity) AstralHitEntity;
@@ -5072,7 +5057,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                 player.teleport(npc.getStoredLocation());
                 npc.destroy();
                 PersistentDataContainer data = player.getPersistentDataContainer();
-                data.remove(AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs);
+                data.remove(astralprojectionparticles);
                 AstralProjectionNPC.remove(player.getUniqueId());
                 player.setAllowFlight(false);
                 player.setInvisible(false);
@@ -5145,11 +5130,11 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     this.cancel();
                     return;
                 }
-                if (player.getPersistentDataContainer().has(AsᴛʀᴀʟPʀᴏᴊᴇᴄᴛɪᴏɴPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER)) {
+                if (player.getPersistentDataContainer().has(astralprojectionparticles, PersistentDataType.INTEGER)) {
                     Particle.DustOptions BlissParticleOptions = new Particle.DustOptions(org.bukkit.Color.fromRGB(160, 31, 255), 1);
                     player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, 1, 0), 10, 0.5, 0.5, 0.5, 0, BlissParticleOptions, true);
                 }
-                if (player.getPersistentDataContainer().has(FɪʀᴇBᴀʟʟCʜᴀʀɢɪɴɢPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER)) {
+                if (player.getPersistentDataContainer().has(fireballchargingparticles, PersistentDataType.INTEGER)) {
                     Particle.DustOptions BlissParticleOptions = new Particle.DustOptions(org.bukkit.Color.fromRGB(255, 140, 0), 1);
                     player.getWorld().spawnParticle(Particle.REDSTONE, player.getLocation().add(0, 1, 0), 10, 0.5, 0.5, 0.5, 0, BlissParticleOptions, true);
                     player.getWorld().spawnParticle(Particle.SMOKE_NORMAL, player.getLocation().add(0, 1, 0), 10, 0.5, 0.5, 0.5, 0, BlissParticleOptions, true);
@@ -5285,10 +5270,10 @@ public final class BlissGems extends SimplePlugin implements Listener {
             if (WealthGem(WealthGemItem)) {
                 ItemMeta meta = WealthGemItem.getItemMeta();
                 PersistentDataContainer data = RichRushPlayer.getPersistentDataContainer();
-                boolean RICH_RUSH = data.getOrDefault(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER, 0) == 1;
+                boolean RICH_RUSH = data.getOrDefault(richrush, PersistentDataType.INTEGER, 0) == 1;
                 boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
                 if (!RICH_RUSH && !DISABLED_GEM) {
-                    data.set(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER, 1);
+                    data.set(richrush, PersistentDataType.INTEGER, 1);
                     int customModelData = meta.getCustomModelData();
                     long RichRushCooldown;
                     switch (customModelData) {
@@ -5321,10 +5306,10 @@ public final class BlissGems extends SimplePlugin implements Listener {
             if (LifeGem(LifeGemItem)) {
                 ItemMeta meta = LifeGemItem.getItemMeta();
                 PersistentDataContainer data = CircleOfLifePlayer.getPersistentDataContainer();
-                boolean CIRCLE_OF_LIFE = data.getOrDefault(CɪʀᴄʟᴇOғLɪғᴇ, PersistentDataType.INTEGER, 0) == 1;
+                boolean CIRCLE_OF_LIFE = data.getOrDefault(circleoflife, PersistentDataType.INTEGER, 0) == 1;
                 boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
                 if (!CIRCLE_OF_LIFE && !DISABLED_GEM) {
-                    data.set(CɪʀᴄʟᴇOғLɪғᴇ, PersistentDataType.INTEGER, 1);
+                    data.set(circleoflife, PersistentDataType.INTEGER, 1);
                     int customModelData = meta.getCustomModelData();
                     long CircleOfLifeCooldown;
                     switch (customModelData) {
@@ -5427,12 +5412,12 @@ public final class BlissGems extends SimplePlugin implements Listener {
         PersistentDataContainer data = LifeGemRightClickCrouchingPlayer.getPersistentDataContainer();
         Location LifeGemRightClickCrouchingBlockLocation = LifeGemRightClickCrouchingBlock.getLocation();
         World LifeGemRightClickCrouchingBlockLocationWorld = LifeGemRightClickCrouchingBlockLocation.getWorld();
-        boolean CROUCHING_ON_CROP = data.getOrDefault(Cʀᴏᴜᴄʜɪɴɢ_Oɴ_Cʀᴏᴘ, PersistentDataType.INTEGER, 0) == 1;
+        boolean CROUCHING_ON_CROP = data.getOrDefault(crouching_on_crop, PersistentDataType.INTEGER, 0) == 1;
         boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
         if (!CROUCHING_ON_CROP && !DISABLED_GEM && LifeGemRightClickCrouchingPlayerAction == Action.RIGHT_CLICK_BLOCK && LifeGemRightClickCrouchingBlock != null && LifeGemRightClickCrouchingPlayer.isSneaking() && LifeGem(LifeGemItem)) {
             Material blockType = LifeGemRightClickCrouchingBlock.getType();
             if (LifeGem(LifeGemItem)) {
-                data.set(Cʀᴏᴜᴄʜɪɴɢ_Oɴ_Cʀᴏᴘ, PersistentDataType.INTEGER, 1);
+                data.set(crouching_on_crop, PersistentDataType.INTEGER, 1);
                 LifeGemRightClickCrouchingBlockLocationWorld.spawnParticle(Particle.VILLAGER_HAPPY, LifeGemRightClickCrouchingBlockLocation.add(0.5, 0.5, 0.5), 5, 0.5, 0, 0.5, 0.1);
 
                 switch (blockType) {
@@ -5499,15 +5484,15 @@ public final class BlissGems extends SimplePlugin implements Listener {
     public void BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ(EntityDamageByEntityEvent BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ) {
         if (BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getDamager() instanceof Player && BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getEntity() instanceof LivingEntity) {
             Player BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ = (Player) BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getDamager();
-            LivingEntity BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ = (LivingEntity) BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getEntity();
+            LivingEntity BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim = (LivingEntity) BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀ.getEntity();
             PersistentDataContainer data = BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getPersistentDataContainer();
-            boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+            boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(strengthcircle, PersistentDataType.INTEGER, 0) == 1;
             boolean sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
-            boolean sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴘᴇᴇᴅCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+            boolean sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ = data.getOrDefault(speedcircle, PersistentDataType.INTEGER, 0) == 1;
             boolean sᴘᴇᴇᴅ_ʟɪɴᴇ = data.getOrDefault(SpeedLine, PersistentDataType.INTEGER, 0) == 1;
-            boolean ʟɪғᴇ_ᴄɪʀᴄʟᴇ = data.getOrDefault(LɪғᴇCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+            boolean ʟɪғᴇ_ᴄɪʀᴄʟᴇ = data.getOrDefault(lifecircle, PersistentDataType.INTEGER, 0) == 1;
             boolean ʟɪғᴇ_ʟɪɴᴇ = data.getOrDefault(LifeLine, PersistentDataType.INTEGER, 0) == 1;
-            boolean ᴡᴇᴀʟᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(WᴇᴀʟᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+            boolean ᴡᴇᴀʟᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(wealthcircle, PersistentDataType.INTEGER, 0) == 1;
             boolean ᴡᴇᴀʟᴛʜ_ʟɪɴᴇ = data.getOrDefault(WealthLine, PersistentDataType.INTEGER, 0) == 1;
             boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
             ItemStack BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ = BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getInventory().getItemInMainHand();
@@ -5527,11 +5512,11 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     }
                     StrengthGem_Power_1_StrengthCircle.put(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getUniqueId(), StrengthLineCooldown);
                     StrengthGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ);
-                    for (PotionEffect effect : BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.getActivePotionEffects()) {
-                        BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.removePotionEffect(effect.getType());
+                    for (PotionEffect effect : BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.getActivePotionEffects()) {
+                        BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.removePotionEffect(effect.getType());
                     }
-                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 800, 1));
-                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ, 241, 3, 3).runTaskTimer(this, 0, 2);
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.addPotionEffect(new PotionEffect(PotionEffectType.WITHER, 800, 1));
+                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim, 241, 3, 3).runTaskTimer(this, 0, 2);
                 }
             }
             if (SpeedGem(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ)) {
@@ -5550,14 +5535,14 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     }
                     SpeedGem_Power_1_SpeedCircle.put(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getUniqueId(), SpeedLineCooldown);
                     SpeedGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ);
-                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.getName());
-                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getName());
-                    for (PotionEffect effect : BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.getActivePotionEffects()) {
-                        BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.removePotionEffect(effect.getType());
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have used" + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " on " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.getName());
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + " \uD83D\uDD2E" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have been affected with" + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83C\uDFAFSloth's Sedative" + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + " by " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getName());
+                    for (PotionEffect effect : BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.getActivePotionEffects()) {
+                        BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.removePotionEffect(effect.getType());
                     }
-                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30 * 30, 3));
-                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 20, 4));
-                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ, 254, 253, 23).runTaskTimer(this, 0, 2);
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, 30 * 30, 3));
+                    BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim.addPotionEffect(new PotionEffect(PotionEffectType.SLOW_DIGGING, 20 * 20, 4));
+                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim, 254, 253, 23).runTaskTimer(this, 0, 2);
                 }
             }
             if (LifeGem(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀIᴛᴇᴍ)) {
@@ -5576,7 +5561,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     }
                     LifeGem_Power_1_LifeCircle.put(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getUniqueId(), LifeLineCooldown);
                     LifeGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ);
-                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ, 254, 4, 180).runTaskTimer(this, 0, 2);
+                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim, 254, 4, 180).runTaskTimer(this, 0, 2);
 
                 }
             }
@@ -5597,7 +5582,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     }
                     WealthGem_Power_1_WealthCircle.put(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ.getUniqueId(), WealthLineCooldown);
                     WealthGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ);
-                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀVɪᴄᴛɪᴍ, 14, 201, 18).runTaskTimer(this, 0, 2);
+                    new ParticleLineTask(BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀAᴛᴛᴀᴄᴋᴇʀ, BʟɪssPᴀʀᴛɪᴄʟᴇLɪɴᴇUsᴇʀvictim, 14, 201, 18).runTaskTimer(this, 0, 2);
                 }
             }
         }
@@ -5677,11 +5662,11 @@ public final class BlissGems extends SimplePlugin implements Listener {
             ItemStack StrengthGemItem = ChadStrengthPlayer.getInventory().getItemInMainHand();
             if (StrengthGem(StrengthGemItem)) {
                 PersistentDataContainer data = ChadStrengthPlayer.getPersistentDataContainer();
-                boolean CHAD_STRENGTH = data.getOrDefault(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER, 0) == 1;
+                boolean CHAD_STRENGTH = data.getOrDefault(chadstrength, PersistentDataType.INTEGER, 0) == 1;
                 boolean DISABLED_GEM = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
                 if (!CHAD_STRENGTH && !DISABLED_GEM) {
-                    data.set(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER, 1);
-                    data.set(CʜᴀᴅSᴛʀᴇɴɢᴛʜPᴀʀᴛɪᴄʟᴇs, PersistentDataType.INTEGER, 1);
+                    data.set(chadstrength, PersistentDataType.INTEGER, 1);
+                    data.set(chadstrengthparticles, PersistentDataType.INTEGER, 1);
                     ItemMeta meta = StrengthGemItem.getItemMeta();
                     int StrengthGemCcustomModelData = meta.getCustomModelData();
                     long ChadStrengthCooldown;
@@ -5715,7 +5700,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     StrengthGemActionbar(ChadStrengthPlayer);
                     ChadStrengthPlayer.getWorld().spawnParticle(Particle.VILLAGER_HAPPY, ChadStrengthPlayer.getLocation().add(0, 1, 0), 20, 0.5, 0.5, 0.5, 0);
                     data.set(ChadStrengthParticleCase1, PersistentDataType.INTEGER, 1);
-                    data.set(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER, 1);
+                    data.set(chadstrength, PersistentDataType.INTEGER, 1);
                     data.remove(ChadStrengthParticleCase4);
                     data.remove(ChadStrengthParticleCase3);
                     data.remove(ChadStrengthParticleCase2);
@@ -5733,25 +5718,25 @@ public final class BlissGems extends SimplePlugin implements Listener {
             if (ChadStrengthCriticalHit(player)) {
                 int count = ChadStrengthCritical.getOrDefault(playerId, 0) + 1;
                 critCooldown.put(playerId, System.currentTimeMillis());
-                if (player.getPersistentDataContainer().has(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER) && count == 4) {
+                if (player.getPersistentDataContainer().has(chadstrength, PersistentDataType.INTEGER) && count == 4) {
                     data.set(ChadStrengthParticleCase1, PersistentDataType.INTEGER, 1);
                     data.remove(ChadStrengthParticleCase4);
                     data.remove(ChadStrengthParticleCase3);
                     data.remove(ChadStrengthParticleCase2);
                     player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(1.0);
-                } else if (player.getPersistentDataContainer().has(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER) && count == 8) {
+                } else if (player.getPersistentDataContainer().has(chadstrength, PersistentDataType.INTEGER) && count == 8) {
                     data.set(ChadStrengthParticleCase2, PersistentDataType.INTEGER, 1);
                     data.remove(ChadStrengthParticleCase4);
                     data.remove(ChadStrengthParticleCase3);
                     data.remove(ChadStrengthParticleCase1);
                     player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(2.0);
-                } else if (player.getPersistentDataContainer().has(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER) && count == 12) {
+                } else if (player.getPersistentDataContainer().has(chadstrength, PersistentDataType.INTEGER) && count == 12) {
                     data.set(ChadStrengthParticleCase3, PersistentDataType.INTEGER, 1);
                     data.remove(ChadStrengthParticleCase4);
                     data.remove(ChadStrengthParticleCase2);
                     data.remove(ChadStrengthParticleCase1);
                     player.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE).setBaseValue(4.0);
-                } else if (player.getPersistentDataContainer().has(CʜᴀᴅSᴛʀᴇɴɢᴛʜ, PersistentDataType.INTEGER) && count == 16) {
+                } else if (player.getPersistentDataContainer().has(chadstrength, PersistentDataType.INTEGER) && count == 16) {
                     data.set(ChadStrengthParticleCase4, PersistentDataType.INTEGER, 1);
                     data.remove(ChadStrengthParticleCase3);
                     data.remove(ChadStrengthParticleCase2);
@@ -5781,7 +5766,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
             ProjectileSource TerminalVelocityShooter = arrow.getShooter();
             if (TerminalVelocityShooter instanceof Player) {
                 Player TerminalShooterPlayer = (Player) TerminalVelocityShooter;
-                if (TerminalShooterPlayer.getPersistentDataContainer().has(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ, PersistentDataType.INTEGER)) {
+                if (TerminalShooterPlayer.getPersistentDataContainer().has(terminalvelocity, PersistentDataType.INTEGER)) {
                     Vector velocity = arrow.getVelocity();
                     Vector highSpeedVelocity = velocity.multiply(1.3);
                     arrow.setVelocity(highSpeedVelocity);
@@ -5792,23 +5777,23 @@ public final class BlissGems extends SimplePlugin implements Listener {
 
     @EventHandler
     public void PuffGemDoubleJump(PlayerToggleFlightEvent event) {
-        Player DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ = event.getPlayer();
-        ItemStack PuffGemItem = DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.getInventory().getItemInMainHand();
-        PersistentDataContainer data = DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.getPersistentDataContainer();
-        boolean ᴅᴏᴜʙʟᴇ_ᴊᴜᴍᴘ = data.getOrDefault(DᴏᴜʙʟᴇJᴜᴍᴘ, PersistentDataType.INTEGER, 0) == 1;
+        Player doublejumpPʟᴀʏᴇʀ = event.getPlayer();
+        ItemStack PuffGemItem = doublejumpPʟᴀʏᴇʀ.getInventory().getItemInMainHand();
+        PersistentDataContainer data = doublejumpPʟᴀʏᴇʀ.getPersistentDataContainer();
+        boolean ᴅᴏᴜʙʟᴇ_ᴊᴜᴍᴘ = data.getOrDefault(doublejump, PersistentDataType.INTEGER, 0) == 1;
         boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
         if (PuffGem(PuffGemItem)) {
             if (!ᴅᴏᴜʙʟᴇ_ᴊᴜᴍᴘ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
-                data.set(DᴏᴜʙʟᴇJᴜᴍᴘ,PersistentDataType.INTEGER,1);
+                data.set(doublejump,PersistentDataType.INTEGER,1);
                 long DoubleJumpCooldown = 5;
-                PuffGem_Power_2_Enchanting.put(DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.getUniqueId(), DoubleJumpCooldown);
-                PuffGemActionbar(DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ);
+                PuffGem_Power_2_Enchanting.put(doublejumpPʟᴀʏᴇʀ.getUniqueId(), DoubleJumpCooldown);
+                PuffGemActionbar(doublejumpPʟᴀʏᴇʀ);
                 event.setCancelled(true);
-                DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.setAllowFlight(false);
-                DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.setFlying(false);
-                Vector jump = DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.getLocation().getDirection().multiply(0.5).setY(1);
-                DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.setVelocity(jump);
-                DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.getWorld().playSound(DᴏᴜʙʟᴇJᴜᴍᴘPʟᴀʏᴇʀ.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
+                doublejumpPʟᴀʏᴇʀ.setAllowFlight(false);
+                doublejumpPʟᴀʏᴇʀ.setFlying(false);
+                Vector jump = doublejumpPʟᴀʏᴇʀ.getLocation().getDirection().multiply(0.5).setY(1);
+                doublejumpPʟᴀʏᴇʀ.setVelocity(jump);
+                doublejumpPʟᴀʏᴇʀ.getWorld().playSound(doublejumpPʟᴀʏᴇʀ.getLocation(), org.bukkit.Sound.ENTITY_PLAYER_LEVELUP, 1, 1);
             }
         }
     }
@@ -5823,24 +5808,24 @@ public final class BlissGems extends SimplePlugin implements Listener {
         ItemStack BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇIᴛᴇᴍOғғHᴀɴᴅ = BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.getInventory().getItemInOffHand();
         Location BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇLᴏᴄᴀᴛɪᴏɴ = BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.getLocation();
         PersistentDataContainer data = BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.getPersistentDataContainer();
-        boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(strengthcircle, PersistentDataType.INTEGER, 0) == 1;
         boolean sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ = data.getOrDefault(StrengthLine, PersistentDataType.INTEGER, 0) == 1;
-        boolean sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ = data.getOrDefault(SᴘᴇᴇᴅCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean sᴘᴇᴇᴅ_ᴄɪʀᴄʟᴇ = data.getOrDefault(speedcircle, PersistentDataType.INTEGER, 0) == 1;
         boolean sᴘᴇᴇᴅ_ʟɪɴᴇ = data.getOrDefault(SpeedLine, PersistentDataType.INTEGER, 0) == 1;
-        boolean ʟɪғᴇ_ᴄɪʀᴄʟᴇ = data.getOrDefault(LɪғᴇCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean ʟɪғᴇ_ᴄɪʀᴄʟᴇ = data.getOrDefault(lifecircle, PersistentDataType.INTEGER, 0) == 1;
         boolean ʟɪғᴇ_ʟɪɴᴇ = data.getOrDefault(LifeLine, PersistentDataType.INTEGER, 0) == 1;
-        boolean ᴡᴇᴀʟᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(WᴇᴀʟᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean ᴡᴇᴀʟᴛʜ_ᴄɪʀᴄʟᴇ = data.getOrDefault(wealthcircle, PersistentDataType.INTEGER, 0) == 1;
         boolean ᴡᴇᴀʟᴛʜ_ʟɪɴᴇ = data.getOrDefault(WealthLine, PersistentDataType.INTEGER, 0) == 1;
-        boolean ᴘᴜғғ_ᴄɪʀᴄʟᴇ = data.getOrDefault(PᴜғғCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 0) == 1;
+        boolean ᴘᴜғғ_ᴄɪʀᴄʟᴇ = data.getOrDefault(puffcricle, PersistentDataType.INTEGER, 0) == 1;
         boolean ᴘᴜғғ_ʟɪɴᴇ = data.getOrDefault(PuffLine, PersistentDataType.INTEGER, 0) == 1;
-        boolean ᴛᴇʀᴍɪɴᴀʟ_ᴠᴇʟᴏᴄɪᴛʏ_ᴄᴏᴏʟᴅᴏᴡɴ = data.getOrDefault(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ, PersistentDataType.INTEGER, 0) == 1;
-        boolean ᴛᴇʀᴍɪɴᴀʟ_ᴠᴇʟᴏᴄɪᴛʏ = data.getOrDefault(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ, PersistentDataType.INTEGER, 0) == 1;
+        boolean ᴛᴇʀᴍɪɴᴀʟ_ᴠᴇʟᴏᴄɪᴛʏ_ᴄᴏᴏʟᴅᴏᴡɴ = data.getOrDefault(terminalvelocitycooldown, PersistentDataType.INTEGER, 0) == 1;
+        boolean ᴛᴇʀᴍɪɴᴀʟ_ᴠᴇʟᴏᴄɪᴛʏ = data.getOrDefault(terminalvelocity, PersistentDataType.INTEGER, 0) == 1;
         boolean ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ = data.getOrDefault(Disabled_Gem, PersistentDataType.INTEGER, 0) == 1;
         if (BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.isSneaking() && BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇ.getAction() == Action.RIGHT_CLICK_AIR || BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.isSneaking() && BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇ.getAction() == Action.RIGHT_CLICK_BLOCK) {
             if (SpeedGem(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇIᴛᴇᴍOғғHᴀɴᴅ)) {
                 if (!ᴛᴇʀᴍɪɴᴀʟ_ᴠᴇʟᴏᴄɪᴛʏ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
-                    data.set(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏ, PersistentDataType.INTEGER, 1);
-                    data.set(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ, PersistentDataType.INTEGER, 1);
+                    data.set(terminalvelocity, PersistentDataType.INTEGER, 1);
+                    data.set(terminalvelocitycooldown, PersistentDataType.INTEGER, 1);
                     long SpeedCircleCooldown = 35;
                     SpeedGem_Power_2_Enchanting.put(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.getUniqueId(), SpeedCircleCooldown);
                     SpeedGemActionbar(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ);
@@ -5849,7 +5834,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     new BukkitRunnable() {
                         @Override
                         public void run() {
-                            data.remove(TᴇʀᴍɪɴᴀʟVᴇʟᴏᴄɪᴛʏCᴏᴏʟᴅᴏᴡɴ);
+                            data.remove(terminalvelocitycooldown);
                             BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇPʟᴀʏᴇʀ.getAttribute(Attribute.GENERIC_ATTACK_SPEED).setBaseValue(4.0);
                         }
                     }.runTaskLater(this, 100);
@@ -5859,7 +5844,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
         if (BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇ.getAction() == Action.LEFT_CLICK_AIR || BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇ.getAction() == Action.LEFT_CLICK_BLOCK) {
             if (StrengthGem(BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇIᴛᴇᴍ)) {
                 if (!sᴛʀᴇɴɢᴛʜ_ᴄɪʀᴄʟᴇ && !sᴛʀᴇɴɢᴛʜ_ʟɪɴᴇ && !ᴅɪsᴀʙʟᴇᴅ_ɢᴇᴍ) {
-                    data.set(SᴛʀᴇɴɢᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                    data.set(strengthcircle, PersistentDataType.INTEGER, 1);
                     ItemMeta meta = BʟɪssPᴀʀᴛɪᴄʟᴇCɪʀᴄʟᴇIᴛᴇᴍ.getItemMeta();
                     if (meta != null && meta.hasCustomModelData()) {
                         int CustomModelData = meta.getCustomModelData();
@@ -5898,7 +5883,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     int CustomModelData = meta.getCustomModelData();
                     int radius = SpeedGemCustomModelData(CustomModelData);
                     if (radius > 0) {
-                            data.set(SᴘᴇᴇᴅCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            data.set(speedcircle, PersistentDataType.INTEGER, 1);
                             int SpeedGemCustomModelData = meta.getCustomModelData();
                             long SpeedCircleCooldown;
                             switch (SpeedGemCustomModelData) {
@@ -5932,7 +5917,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     int CustomModelData = meta.getCustomModelData();
                     int radius = LifeGemCustomModelData(CustomModelData);
                     if (radius > 0) {
-                            data.set(LɪғᴇCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            data.set(lifecircle, PersistentDataType.INTEGER, 1);
                             int LifeGemCustomModelData = meta.getCustomModelData();
                             long LifeCircleCooldown;
                             switch (LifeGemCustomModelData) {
@@ -5966,7 +5951,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     int CustomModelData = meta.getCustomModelData();
                     int radius = WealthGemCustomModelData(CustomModelData);
                     if (radius > 0) {
-                            data.set(WᴇᴀʟᴛʜCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            data.set(wealthcircle, PersistentDataType.INTEGER, 1);
                             int WealthGemCustomModelData = meta.getCustomModelData();
                             long WealthLineCooldown;
                             switch (WealthGemCustomModelData) {
@@ -5998,7 +5983,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
                     int CustomModelData = meta.getCustomModelData();
                     int radius = PuffGemCustomModelData(CustomModelData);
                     if (radius > 0) {
-                            data.set(PᴜғғCɪʀᴄʟᴇ, PersistentDataType.INTEGER, 1);
+                            data.set(puffcricle, PersistentDataType.INTEGER, 1);
                             int PuffGemCustomModelData = meta.getCustomModelData();
                             long PuffCircleCooldown;
                             switch (PuffGemCustomModelData) {
@@ -6634,50 +6619,50 @@ public final class BlissGems extends SimplePlugin implements Listener {
         Player player = event.getPlayer();
         Block block = event.getBlock();
         if (player.getGameMode() == GameMode.SURVIVAL) {
-            if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.DIAMOND_ORE) {
+            if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.DIAMOND_ORE) {
                 ItemStack itemInHand = player.getInventory().getItemInMainHand();
                 if (itemInHand != null && RichRushPickaxe(itemInHand.getType())) {
                     event.setDropItems(true);
                     block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.DIAMOND, 1));
                     event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-                } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.EMERALD_ORE) {
+                } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.EMERALD_ORE) {
                     event.setDropItems(true);
                     block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.EMERALD, 1));
                     event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
                 }
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.IRON_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.IRON_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.RAW_IRON, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.GOLD_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.GOLD_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.RAW_GOLD, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.COAL_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.COAL_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.COAL, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_DIAMOND_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_DIAMOND_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.DIAMOND, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_EMERALD_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_EMERALD_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.EMERALD, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_IRON_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_IRON_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.RAW_IRON, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_GOLD_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_GOLD_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.RAW_GOLD, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_COAL_ORE) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.DEEPSLATE_COAL_ORE) {
                 event.setDropItems(true);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.COAL, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
-            } else if (player.getPersistentDataContainer().has(RɪᴄʜRᴜsʜ, PersistentDataType.INTEGER) && block.getType() == Material.ANCIENT_DEBRIS) {
+            } else if (player.getPersistentDataContainer().has(richrush, PersistentDataType.INTEGER) && block.getType() == Material.ANCIENT_DEBRIS) {
                 event.setDropItems(false);
                 block.getWorld().dropItemNaturally(block.getLocation(), new ItemStack(Material.NETHERITE_SCRAP, 1));
                 event.getBlock().getWorld().spawnParticle(Particle.REDSTONE, event.getBlock().getLocation().add(0.5, 0.5, 0.5), 30, 0.5, 0.5, 0.5, dustOptions);
