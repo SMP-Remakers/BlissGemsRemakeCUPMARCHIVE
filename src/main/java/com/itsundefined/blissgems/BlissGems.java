@@ -249,11 +249,13 @@ public final class BlissGems extends SimplePlugin implements Listener {
     @Override
     public void onPluginStart() {
         // Plugin startup logic
+
         getCommand("bliss").setExecutor(new Bliss());
         getCommand("menu").setExecutor(new SlashMenu());
         getCommand("bliss").setExecutor(new SlashBliss());
         getCommand("bliss").setTabCompleter(new SlashBliss());
         Bukkit.getPluginManager().registerEvents(this, this);
+        Bukkit.getPluginManager().registerEvents(new Events(), this);
         getServer().getPluginManager().registerEvents(this, this);
         getServer().getPluginManager().registerEvents(new SlashMenu(), this);
         new GemEffects().runTaskTimer(this, 0, 1);
