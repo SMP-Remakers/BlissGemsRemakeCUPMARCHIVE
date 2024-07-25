@@ -1,4 +1,4 @@
-package com.itsundefined.blissgems.commands;
+package com.itsundefined.blissgems.internal.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

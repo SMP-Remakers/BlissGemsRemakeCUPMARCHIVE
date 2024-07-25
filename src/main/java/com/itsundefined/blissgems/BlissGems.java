@@ -4,8 +4,9 @@ package com.itsundefined.blissgems;
 
 
 
-import com.itsundefined.blissgems.commands.SlashBliss;
-import com.itsundefined.blissgems.commands.SlashMenu;
+import com.itsundefined.blissgems.internal.commands.SlashBliss;
+import com.itsundefined.blissgems.internal.commands.SlashMenu;
+import com.itsundefined.blissgems.internal.gems.Strength;
 import net.citizensnpcs.api.CitizensAPI;
 import net.citizensnpcs.api.trait.trait.Equipment;
 import net.md_5.bungee.api.ChatMessageType;
@@ -69,7 +70,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import org.mineacademy.fo.Common;
 import org.spigotmc.event.entity.EntityDismountEvent;
 import org.spigotmc.event.entity.EntityMountEvent;
 
@@ -235,8 +235,6 @@ public final class BlissGems extends SimplePlugin implements Listener {
     private final String targetPlayerName = "ITsUndefined_";
     private Player player;
 
-
-
     @Override
     public void onPluginStart() {
         // Plugin startup logic
@@ -365,55 +363,9 @@ public final class BlissGems extends SimplePlugin implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                for (Player BloodThornsPlayer : Bukkit.getOnlinePlayers()) {
-                    ItemStack StrengthGemItem = BloodThornsPlayer.getInventory().getItemInOffHand();
-                    if (StrengthGem(StrengthGemItem)) {
-                        double health = BloodThornsPlayer.getHealth();
-                        AttributeInstance BloodThornsAttribute = BloodThornsPlayer.getAttribute(Attribute.GENERIC_ATTACK_DAMAGE);
-                        if (BloodThornsAttribute != null) {
-                            if (health >= 0.5 && health < 1) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 1 && health < 1.5) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 1.5 && health < 2) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 2 && health < 2.5) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 2.5 && health < 3) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 3 && health < 3.5) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 3.5 && health < 4) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 4 && health < 4.5) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 4.5 && health < 5) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 5.5 && health < 6) {
-                                BloodThornsAttribute.setBaseValue(8.0);
-                            } else if (health >= 6 && health < 6.5) {
-                                BloodThornsAttribute.setBaseValue(5.5);
-                            } else if (health >= 6.5 && health < 8) {
-                                BloodThornsAttribute.setBaseValue(5.0);
-                            } else if (health >= 8 && health < 8.5) {
-                                BloodThornsAttribute.setBaseValue(4.5);
-                            } else if (health >= 8.5 && health < 10) {
-                                BloodThornsAttribute.setBaseValue(3.5);
-                            } else if (health >= 10 && health < 10.5) {
-                                BloodThornsAttribute.setBaseValue(3.0);
-                            } else if (health >= 10.5 && health < 12) {
-                                BloodThornsAttribute.setBaseValue(2.5);
-                            } else if (health >= 12 && health < 12.5) {
-                                BloodThornsAttribute.setBaseValue(2.0);
-                            } else if (health >= 12.5 && health < 13) {
-                                BloodThornsAttribute.setBaseValue(1.5);
-                            } else {
-                                BloodThornsAttribute.setBaseValue(1.0);
-                            }
-                        }
-                    }
-                }
+                Strength.StrengthTick();
             }
+
         }.runTaskTimer(this, 0, 1);
         new BukkitRunnable() {
             @Override
@@ -816,6 +768,7 @@ public final class BlissGems extends SimplePlugin implements Listener {
         StrengthGemChadStrength(StrengthGem_Power_3_ChadStrength, playerId);
         StrengthGemChadStrengthParticles(StrengthGem_Power_8_ChadStrength, playerId);
     }
+
     private void UpdateSpeedGemTimers(Player player) {
         UUID playerId = player.getUniqueId();
         SpeedGemSpeedCircle(SpeedGem_Power_1_SpeedCircle, playerId);
@@ -1216,7 +1169,8 @@ public final class BlissGems extends SimplePlugin implements Listener {
             return time - 1;
         });
     }
-    // should work 
+
+    // should work
     private void StrengthGemChadStrength(Map<UUID, Long> timerMap, UUID playerId) {
         long resetTime = 0L;
         timerMap.compute(playerId, (uuid, time) -> {

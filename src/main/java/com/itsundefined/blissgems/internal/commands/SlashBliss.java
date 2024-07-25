@@ -1,4 +1,4 @@
-package com.itsundefined.blissgems.commands;
+package com.itsundefined.blissgems.internal.commands;
 
 import net.citizensnpcs.api.npc.NPC;
 import org.bukkit.Bukkit;
@@ -29,34 +29,18 @@ import java.util.List;
 
 public class SlashBliss implements TabCompleter, CommandExecutor{
     private final HashMap<UUID, Integer> BlissEnergyGemHealth = new HashMap<>();
-    private NamespacedKey ChadStrengthParticleCase1;
-    private NamespacedKey ChadStrengthParticleCase2;
-    private NamespacedKey ChadStrengthParticleCase3;
-    private NamespacedKey ChadStrengthParticleCase4;
-    private NamespacedKey BlissParticlesLess;
-    private NamespacedKey BlissParticlesDefault;
 
     @Override
     public List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-        BlissParticlesLess = new NamespacedKey("BlissGems", "BlissParticleLevel.2");
-        BlissParticlesDefault = new NamespacedKey("BlissGems", "BlissParticleLevel.3");
-        ChadStrengthParticleCase4 = new NamespacedKey("BlissGems", "ChadStrengthParticleCase.4");
-        ChadStrengthParticleCase3 = new NamespacedKey("BlissGems", "ChadStrengthParticleCase.3");
-        ChadStrengthParticleCase2 = new NamespacedKey("BlissGems", "ChadStrengthParticleCase.2");
-        ChadStrengthParticleCase1 = new NamespacedKey("BlissGems", "ChadStrengthParticleCase.1");
-        
+
         sender.sendMessage("ello");
         if (args.length == 1){
             List<String> gem = new ArrayList<>();
-            Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-            Bukkit.getServer().getOnlinePlayers().toArray(players);
-            for (int i = 0; i < players.length; i++){
                 gem.add("givegem");
                 gem.add("particles");
                 gem.add("setenergy");
                 gem.add("withdraw");
                 gem.add("item");
-            }
             return gem;
         } else if (args.length == 2) {
             List<String> gems = new ArrayList<>();
@@ -72,9 +56,8 @@ public class SlashBliss implements TabCompleter, CommandExecutor{
         } else if (args.length == 3){
             List<String> playerNames = new ArrayList<>();
             Player[] players = new Player[Bukkit.getServer().getOnlinePlayers().size()];
-            Bukkit.getServer().getOnlinePlayers().toArray();
-            for (int i = 0; i < players.length; i++){
-                playerNames.add(players[i].getName());
+            for (Player p : Bukkit.getOnlinePlayers()) {
+                playerNames.add(p.getName());
             }
             return playerNames;
         }
@@ -94,22 +77,17 @@ public class SlashBliss implements TabCompleter, CommandExecutor{
         if (args.length == 2 && args[0].equalsIgnoreCase("particles") && args[1].equalsIgnoreCase("default")) {
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(255, 215, 115)) + "\uD83D\uDD2E " + ChatColor.GREEN + "Performance Level changed to " + ChatColor.YELLOW + "DEFAULT");
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.set(BlissParticlesDefault, PersistentDataType.INTEGER, 1);
-            data.remove(BlissParticlesLess);
             return true;
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("particles") && args[1].equalsIgnoreCase("less")) {
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(255, 215, 115)) + "\uD83D\uDD2E " + ChatColor.GREEN + "Performance Level changed to " + ChatColor.YELLOW + "LESS");
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.set(BlissParticlesLess, PersistentDataType.INTEGER, 1);
-            data.remove(BlissParticlesDefault);
             return true;
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("particles") && args[1].equalsIgnoreCase("none")) {
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(255, 215, 115)) + "\uD83D\uDD2E " + ChatColor.GREEN + "Performance Level changed to " + ChatColor.YELLOW + "NONE");
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.remove(BlissParticlesLess);
-            data.remove(BlissParticlesDefault);
+
             return true;
         }
         if (args.length == 2 && args[0].equalsIgnoreCase("setenergy") && args[1].equalsIgnoreCase("0")) {
@@ -188,30 +166,18 @@ public class SlashBliss implements TabCompleter, CommandExecutor{
 
         if (args.length == 3 && args[0].equalsIgnoreCase("gem") && args[1].equalsIgnoreCase("Strength") && args[2].equalsIgnoreCase("1")) {
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.set(ChadStrengthParticleCase3, PersistentDataType.INTEGER, 1);
-            data.remove(ChadStrengthParticleCase1);
-            data.remove(ChadStrengthParticleCase2);
-            data.remove(ChadStrengthParticleCase4);
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have given " + net.md_5.bungee.api.ChatColor.of(new Color(255, 228, 171)) + player.getName() + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + ChatColor.BOLD + " sᴛʀᴇɴɢᴛʜ " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "gem " + ChatColor.GRAY + "Tier " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "1");
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have received " + net.md_5.bungee.api.ChatColor.of(new Color(241, 3, 3)) + ChatColor.BOLD + "sᴛʀᴇɴɢᴛʜ " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "gem " + ChatColor.GRAY + "Tier " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "1");
 
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("gem") && args[1].equalsIgnoreCase("Speed") && args[2].equalsIgnoreCase("1")) {
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.set(ChadStrengthParticleCase2, PersistentDataType.INTEGER, 1);
-            data.remove(ChadStrengthParticleCase1);
-            data.remove(ChadStrengthParticleCase3);
-            data.remove(ChadStrengthParticleCase4);
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have given " + net.md_5.bungee.api.ChatColor.of(new Color(255, 228, 171)) + player.getName() + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + ChatColor.BOLD + " sᴘᴇᴇᴅ " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "gem " + ChatColor.GRAY + "Tier " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "1");
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have received " + net.md_5.bungee.api.ChatColor.of(new Color(254, 253, 23)) + ChatColor.BOLD + "sᴘᴇᴇᴅ " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "gem " + ChatColor.GRAY + "Tier " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "1");
 
         }
         if (args.length == 3 && args[0].equalsIgnoreCase("gem") && args[1].equalsIgnoreCase("Life") && args[2].equalsIgnoreCase("1")) {
             PersistentDataContainer data = player.getPersistentDataContainer();
-            data.set(ChadStrengthParticleCase1, PersistentDataType.INTEGER, 1);
-            data.remove(ChadStrengthParticleCase2);
-            data.remove(ChadStrengthParticleCase3);
-            data.remove(ChadStrengthParticleCase4);
 
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 4, 180)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have given " + net.md_5.bungee.api.ChatColor.of(new Color(255, 228, 171)) + player.getName() + net.md_5.bungee.api.ChatColor.of(new Color(254, 4, 180)) + ChatColor.BOLD + " ʟɪғᴇ " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "gem " + ChatColor.GRAY + "Tier " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "1");
             player.sendMessage(net.md_5.bungee.api.ChatColor.of(new Color(254, 4, 180)) + "\uD83D\uDD2E " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "You have received " + net.md_5.bungee.api.ChatColor.of(new Color(254, 4, 180)) + ChatColor.BOLD + "ʟɪғᴇ " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "gem " + ChatColor.GRAY + "Tier " + net.md_5.bungee.api.ChatColor.of(new Color(184, 255, 251)) + "1");
